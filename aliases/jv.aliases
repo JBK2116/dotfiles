@@ -1,0 +1,8 @@
+# Java aliases
+alias javaversion="java -version"
+alias javaversionchange="sudo update-alternatives --config java"
+
+# Gradle aliases
+alias gradle="./gradlew"
+alias gradlerun="./gradlew bootRun"
+alias gradlesetup="chmod +x gradlew"

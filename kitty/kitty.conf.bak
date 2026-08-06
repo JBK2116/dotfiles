@@ -1,0 +1,168 @@
+# SYMLINK: ~/.config/kitty/kitty.conf.bak
+
+# Theme
+include ./theme.conf
+
+# Environment
+term xterm-256color
+
+# Window
+window_padding_width     2
+hide_window_decorations  yes
+background_opacity       1.0
+dynamic_background_color no
+resize_in_steps          no
+
+# Scrollback
+scrollback_lines        10000
+wheel_scroll_multiplier 3.0
+
+# Font
+font_family      Iosevka Nerd Font Regular
+bold_font        Iosevka Nerd Font Bold
+italic_font      Iosevka Nerd Font Italic
+bold_italic_font Iosevka Nerd Font Bold Italic
+font_size        12.0
+
+# Cursor
+cursor_shape           block
+cursor_blink_interval  0
+cursor_beam_thickness  0.15
+cursor_shape_unfocused hollow
+
+# Mouse
+mouse_hide_wait -1
+
+mouse_map right  press ungrabbed paste_from_clipboard
+mouse_map middle press ungrabbed paste_from_selection
+
+# Clipboard / Selection
+copy_on_select    yes
+clipboard_control write-clipboard write-primary read-clipboard read-primary
+
+select_by_word_characters @-./_~?&=%+#
+
+# URLs
+url_prefixes  ipfs ipns magnet mailto gemini gopher https http news file git ssh ftp
+detect_urls   yes
+
+# Keybindings
+
+# Clipboard
+map ctrl+shift+c  copy_to_clipboard
+map ctrl+shift+v  paste_from_clipboard
+
+# Font size
+map ctrl+equal    increase_font_size
+map ctrl+minus    decrease_font_size
+map ctrl+0        restore_font_size
+
+# Scrolling
+map shift+page_up   scroll_page_up
+map shift+page_down scroll_page_down
+map shift+home      scroll_home
+map shift+end       scroll_end
+map ctrl+shift+k    scroll_line_up
+map ctrl+shift+j    scroll_line_down
+
+# Window management
+map ctrl+shift+n      new_os_window
+map ctrl+shift+enter  new_os_window
+map ctrl+shift+q      quit
+map f11               toggle_fullscreen
+
+# URL hints
+map ctrl+shift+u  kitten hints
+
+# Search
+map ctrl+shift+f  show_scrollback
+
+# Clear
+map ctrl+l  clear_terminal scrollback active
+
+# Vi mode
+map ctrl+shift+space show_scrollbackkitty.conf
+
+# Theme
+# Rose Pine Moon: https://github.com/rose-pine/kitty
+# include ~/.config/kitty/themes/rose-pine-moon.conf
+
+# Environment
+term xterm-256color
+
+# Window
+window_padding_width     2
+hide_window_decorations  yes
+background_opacity       1.0
+dynamic_background_color no
+resize_in_steps          no
+
+# Scrollback
+scrollback_lines        10000
+wheel_scroll_multiplier 3.0
+
+# Font
+font_family      Iosevka Nerd Font Regular
+bold_font        Iosevka Nerd Font Bold
+italic_font      Iosevka Nerd Font Italic
+bold_italic_font Iosevka Nerd Font Bold Italic
+font_size        12.0
+
+# Cursor
+cursor_shape           block
+cursor_blink_interval  0
+cursor_beam_thickness  0.15
+cursor_shape_unfocused hollow
+
+# Mouse
+mouse_hide_wait -1
+
+mouse_map right  press ungrabbed paste_from_clipboard
+mouse_map middle press ungrabbed paste_from_selection
+
+# Clipboard / Selection
+copy_on_select    yes
+clipboard_control write-clipboard write-primary read-clipboard read-primary
+
+select_by_word_characters @-./_~?&=%+#
+
+# URLs
+url_prefixes  ipfs ipns magnet mailto gemini gopher https http news file git ssh ftp
+detect_urls   yes
+
+# Keybindings
+
+# Clipboard
+map ctrl+shift+c  copy_to_clipboard
+map ctrl+shift+v  paste_from_clipboard
+
+# Font size
+map ctrl+equal    increase_font_size
+map ctrl+minus    decrease_font_size
+map ctrl+0        restore_font_size
+
+# Scrolling
+map shift+page_up   scroll_page_up
+map shift+page_down scroll_page_down
+map shift+home      scroll_home
+map shift+end       scroll_end
+map ctrl+shift+k    scroll_line_up
+map ctrl+shift+j    scroll_line_down
+
+# Window management
+map ctrl+shift+n      new_os_window
+map ctrl+shift+enter  new_os_window
+map ctrl+shift+q      quit
+map f11               toggle_fullscreen
+
+# URL hints
+map ctrl+shift+u  kitten hints
+
+# Search
+map ctrl+shift+f  show_scrollback
+
+# Clear
+map ctrl+l  clear_terminal scrollback active
+
+# Vi mode
+map ctrl+shift+space show_scrollback

@@ -1,0 +1,37 @@
+# Goose Migrations
+_GOOSE="goose -dir ./migrations"
+
+alias gooseup="$_GOOSE up"
+alias gooseup1="$_GOOSE up-by-one"
+alias gooseredo="$_GOOSE redo"
+alias goosereset="$_GOOSE reset"
+alias goosestatus="$_GOOSE status"
+alias goosev="$_GOOSE version"
+alias goosefix="$_GOOSE fix"
+alias goosevalidate="$_GOOSE validate"
+
+# goosedown <steps> migrate down by N steps.
+goosedown() {
+  [ -z "$1" ] && { echo "usage: goosedown <steps>"; return 1; }
+  for i in $(seq 1 "$1"); do
+    $_GOOSE down || return 1
+  done
+}
+
+# goosegoto <version> migrate to a specific version.
+goosegoto() {
+  [ -z "$1" ] && { echo "usage: goosegoto <version>"; return 1; }
+  $_GOOSE goto "$1"
+}
+
+# goosenew <name> create a new SQL migration file.
+goosenew() {
+  [ -z "$1" ] && { echo "usage: goosenew <name>"; return 1; }
+  $_GOOSE create "$(echo "$1" | tr ' ' '_' | tr -cd '[:alnum:]_')" sql
+}
+
+# ggo <name> create a new Go migration file.
+ggo() {
+  [ -z "$1" ] && { echo "usage: ggo <name>"; return 1; }
+  $_GOOSE create "$(echo "$1" | tr ' ' '_' | tr -cd '[:alnum:]_')" go
+}

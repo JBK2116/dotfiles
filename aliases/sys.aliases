@@ -1,0 +1,98 @@
+# Basic command aliases
+alias cl="clear"
+
+alias changeterm="sudo update-alternatives --config x-terminal-emulator"
+
+# Bat configuration
+alias cat='bat'                              # replace cat globally with syntax highlighting
+alias b='bat -p'                             # plain output, no headers/pager
+alias bl='bat --paging=always'               # always use pager (like less)
+alias bc='bat --style=header,grid --color=always'  # pretty grid with headers and colors
+alias bh='bat --highlight-line=1'            # highlight first line (or use for other custom highlighting)
+alias bf='bat --wrap=never'                  # avoid line wrapping for long lines
+alias bnb='bat --style=numbers,changes'      # show line numbers and Git changes
+
+# Virtualization
+alias vboxon="sudo modprobe -r kvm_intel kvm"
+alias vboxoff="sudo modprobe kvm kvm_intel"
+
+# Clipboard
+alias pbcopy='xclip -selection clipboard' # best used with pipe | 
+alias pbpaste='xclip -selection clipboard -o' # best used with > 
+alias pbshow='xclip -selection clipboard -o'
+
+# Cron
+alias cronstatus="sudo systemctl status cron"
+alias cronlogs="sudo tail -f /var/log/cron"
+alias cronjobs="crontab -l"
+
+# Redis
+alias rstart='systemctl start redis'
+alias rstop='systemctl stop redis'
+alias rrestart='systemctl restart redis'
+alias rstatus='systemctl status redis'
+alias renable='sudo systemctl enable redis'
+alias rdisable='sudo systemctl disable redis'
+alias renabled='systemctl is-enabled redis'
+alias rcli='redis-cli'
+
+# PostgreSQL
+alias psqlroot='sudo -u postgres psql'
+alias pgstart='systemctl start postgresql'
+alias pgstop='systemctl stop postgresql'
+alias pgrestart='systemctl restart postgresql'
+alias pgstatus='systemctl status postgresql'
+alias pgenable='sudo systemctl enable postgresql'
+alias pgdisable='sudo systemctl disable postgresql'
+alias pgenabled='systemctl is-enabled postgresql'
+
+# ripgrep
+alias rga='rg -i'                     # Search all files recursively (case-insensitive)
+alias rgl='rg -l'                     # Show only filenames containing the match
+alias rgh='rg --hidden -i'            # Search all files including hidden ones
+alias rgc='rg --color=auto'           # Search with color output, ignores .gitignored files by default
+alias rgi='rg --files | fzf'          # Interactive fuzzy search in files
+alias rgv='rg -n | fzf | awk -F: '\''{print $1 ":" $2}'\'' | xargs vim'  # Search pattern and open selected line in Vim
+
+#Ubuntu Management
+alias update+upgrade="sudo apt update && sudo apt upgrade"
+
+# FZF 
+alias bat='bat'
+alias fzp='fzf --preview "cat --style=numbers --color=always {}" --height 60%'
+alias ff='fzf --preview "cat --color=always --style=numbers --line-range=:500 {}"'
+alias fzh='eval $(history | fzf --tac --no-sort | sed "s/^ *[0-9]* *//")'
+alias ef='nvim $(fzf)'
+alias rmf='rm $(fzf)'
+alias cdf='cd $(find . -type d | fzf)'
+
+# Tree 
+alias tr='tree -C -h -t -f -D --gitignore'
+alias trall='tree -C -h -t -f -a -D'
+alias trl='tree -C -h -t --gitignore -L'
+alias trd='tree -C -h -t -f -d -D --gitignore'
+
+# Nginx
+alias ngstart='systemctl start nginx'
+alias ngstop='systemctl stop nginx'
+alias ngrestart='systemctl restart nginx'
+alias ngreload='nginx -t && systemctl reload nginx'
+alias ngstatus='systemctl status nginx'
+alias ngtest='nginx -t'
+alias ngenable='sudo systemctl enable nginx'
+alias ngdisable='sudo systemctl disable nginx'
+alias ngenabled='systemctl is-enabled nginx'
+alias nlogs='tail -f /var/log/nginx/error.log'
+alias alogs='tail -f /var/log/nginx/access.log'
+
+# Eza (ls replacement)
+alias ls='eza --icons'                              # default ls with icons
+alias l='eza --icons --long'                        # long format
+alias la='eza --icons --long --all'                 # long + hidden files
+alias lt='eza --icons --long --tree'                # long + tree view
+alias lta='eza --icons --long --tree --all'         # long + tree + hidden
+alias ll='eza --icons --long --header --git'        # long + git status + header
+alias lla='eza --icons --long --header --git --all' # all of the above + hidden
+alias lsd='eza --icons --only-dirs'                 # dirs only
+alias lsf='eza --icons --only-files'                # files only
+alias ltl='eza --icons --tree -L'                   # tree with depth: usage: ltl 2

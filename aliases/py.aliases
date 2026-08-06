@@ -1,0 +1,74 @@
+alias py="python3"
+
+# Python versions
+alias pythonversions="ls -l /usr/bin/python3.* | grep -v config"
+alias pythonversion="python3 --version"
+alias changepyversion="sudo update-alternatives --config python3"
+
+# Ruff Aliases
+alias rfix='ruff fix'
+alias rcfix='ruff check --fix'
+alias rfor='ruff format'
+
+# Fast Api Aliases
+alias fastrs='uv run fastapi dev'
+
+# Alembic Aliases
+alias algenmi='alembic revision --autogenerate -m'
+alias almigrate='alembic upgrade head'
+alias alundo='alembic downgrade'
+alias alnuclear='alembic downgrade base'
+alias alcurrent='alembic current'
+alias alhistory='alembic history --verbose'
+alias alview='alembic show'
+
+# UV Aliases
+alias venv='uv venv'
+alias venvon='source .venv/bin/activate'
+alias venvoff='deactivate'
+alias uva='uv add'
+alias uvr='uv remove'
+alias uvrun='uv run'
+alias uvl='uv lock'
+alias uvs='uv sync'
+alias dependencies='uv tree'
+alias uvu='uv self update'
+
+# DJANGO Aliases
+alias rs="python manage.py runserver"
+alias trs="python manage.py tailwind dev"
+alias tbuild='python manage.py tailwind build'
+alias dsh="python manage.py shell"
+alias dsu="python manage.py createsuperuser"
+alias dcollect='python manage.py collectstatic --noinput'
+alias dt="python manage.py test"                           # Run all tests
+alias dts="python manage.py test --keepdb"                 # Reuse test DB
+alias dtv="python manage.py test -v 2"                     # Verbose test output
+alias dta="python manage.py test apps."                    # Run all app tests
+alias dtt="coverage run manage.py test && coverage report" # Run w/ coverage
+alias dcf="coverage html && open htmlcov/index.html"       # Open coverage report
+alias dmm="python manage.py makemigrations"
+alias dm="python manage.py migrate"
+alias dsql="python manage.py sqlmigrate"
+alias dlsm="python manage.py showmigrations"
+alias dfl="python manage.py flush"
+alias ds="python manage.py dbshell"
+alias dcp="python manage.py check"
+alias dmypy="mypy --explicit-package-bases ."
+
+# Gunicorn
+alias gstart='systemctl start gunicorn'
+alias gstop='systemctl stop gunicorn'
+alias grestart='systemctl restart gunicorn'
+alias greload='systemctl reload gunicorn'
+alias gstatus='systemctl status gunicorn'
+alias genable='sudo systemctl enable gunicorn'
+alias gdisable='sudo systemctl disable gunicorn'
+alias genabled='systemctl is-enabled gunicorn'
+
+# ty type checking aliases
+alias tyall="ty check ."
+alias tyone="ty check"
+
+# daphne
+alias drestart="sudo systemctl restart daphne"

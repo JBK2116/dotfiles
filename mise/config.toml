@@ -1,0 +1,53 @@
+# SYMLINK: ~/.config/mise/config.toml
+
+[tools] # Runtimes & Languages
+usage = "latest"
+# Java
+java = "openjdk-25"
+# Golang
+go = "latest"
+"go:github.com/pressly/goose/v3/cmd/goose" = "latest"
+# Python 
+python = { version = "latest", postinstall = "pip install pipx" }
+"aqua:astral-sh/uv" = "latest"
+# Javascript
+node = "latest"
+npm = "latest"
+# Rust
+rust = "latest"
+# C/C++
+make = "latest"
+cmake = "latest"
+
+# Editor
+"aqua:neovim/neovim" = "latest"
+
+# CLI Tools
+"aqua:BurntSushi/ripgrep" = "latest"
+"aqua:ajeetdsouza/zoxide" = "latest"
+"aqua:atuinsh/atuin" = "latest"
+"aqua:starship/starship" = "latest"
+"aqua:sxyazi/yazi" = "latest"
+"aqua:mikefarah/yq" = "latest"
+"aqua:jqlang/jq" = "latest"
+"aqua:sharkdp/bat" = "latest"
+"aqua:tmux/tmux-builds" = "latest"
+"aqua:junegunn/fzf" = "latest"
+"aqua:sharkdp/fd" = "latest"
+
+[settings]
+# Automatically sets JAVA_HOME whenever a Java version is active
+legacy_version_file = true
+# Automatically install missing tools needed when running `mise x`
+auto_install = true
+# Automatically choose the correct color theme for displaying mise output
+color_theme = "auto"
+# Another version of auto_install
+not_found_auto_install = true
+# Automatically sets GOROOT and adds GOPATH/bin to your PATH
+go.set_goroot = true
+go.set_gopath = true
+
+[tasks.setup-nvim]
+# change dnf to match the environments proper package manager
+run = "sudo dnf install -y unzip gcc tar curl && npm install -g tree-sitter-cli"

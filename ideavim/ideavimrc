@@ -1,0 +1,264 @@
+"" SYMLINK: ~/.ideavimrc
+
+"" .ideavimrc - IntellJ IDEs
+
+"" Base Settings
+set scrolloff=10
+set relativenumber
+set showmode
+set showcmd
+
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+
+set ideajoin
+set visualbell
+
+" Use system clipboard
+set clipboard+=unnamedplus
+
+" Handlers
+sethandler <C-j> n:vim
+sethandler <C-j> i:ide
+sethandler <C-k> n:vim
+sethandler <C-k> i:ide
+sethandler <C-h> a:vim
+sethandler <C-l> a:vim
+
+let mapleader = " "
+
+"" Plugin Settings
+set surround      " cs/ds/ys to change, delete, add surroundings (quotes, brackets, tags)
+set nerdtree      " file tree navigation with vim keys
+set highlightedyank " highlight objects that have just been yanked
+set anyobject     " semantic text objects: aa/ia args, ac/ic class, af/if func, al/il loop, ay/iy conditional, av/iv assignment
+set textobj-entire      " vae/vie to select entire file
+set exchange            " cx to swap two text objects
+set ReplaceWithRegister " gr to replace motion with register contents
+set peekaboo            " see register contents before pasting
+
+" Easymotion settings
+set notimeout
+
+" Which-key settings
+set which-key
+let g:WhichKey_FontSize = 16
+let g:WhichKeyDesc_acejump = "s AceJump"
+let g:WhichKey_CommandColor = "#41ead4"
+let g:WhichKey_PrefixColor = "#f335b2"
+let g:WhichKey_SortOrder = "by_key_prefix_first"
+
+let g:WhichKeyDesc_leader = "<leader> Leader key"
+
+let g:WhichKeyDesc_code = "<leader>c Code"
+let g:WhichKeyDesc_code_actions = "<leader>ca Code actions"
+let g:WhichKeyDesc_comment_line = "<leader>cc Comment line"
+let g:WhichKeyDesc_format = "<leader>cf Format file"
+let g:WhichKeyDesc_rename_file = "<leader>cr Rename file"
+
+let g:WhichKeyDesc_fold = "<leader>z Folding"
+let g:WhichKeyDesc_fold_all = "<leader>zc Fold all regions"
+let g:WhichKeyDesc_unfold_all = "<leader>zo Unfold all regions"
+
+let g:WhichKeyDesc_window = "<leader>w Window splits"
+let g:WhichKeyDesc_window_split_vertically = "<leader>wv Split vertically"
+let g:WhichKeyDesc_window_split_horizontally = "<leader>ws Split horizontally"
+let g:WhichKeyDesc_window_split_unsplit = "<leader>wu Unsplit"
+let g:WhichKeyDesc_window_split_move_editor = "<leader>wm Move editor to opposite tab group"
+
+
+let g:WhichKeyDesc_display = "<leader>d Display options"
+let g:WhichKeyDesc_zen_mode = "<leader>dz Toggle Zen mode"
+let g:WhichKeyDesc_df_mode = "<leader>dd Toggle Distraction-Free mode"
+let g:WhichKeyDesc_fullscreen = "<leader>df Toggle full screen"
+
+let g:WhichKeyDesc_action_context_menu = "<leader>am Open context menu"
+let g:WhichKeyDesc_action_search = "<leader>as Open command modal"
+
+let g:WhichKeyDesc_file_nav = "<leader>f File navigation"
+let g:WhichKeyDesc_file_nav_goto_file = "<leader>ff Go to file"
+let g:WhichKeyDesc_file_nav_goto_content = "<leader>fc Search for file content"
+let g:WhichKeyDesc_file_nav_show_recent_files = "<leader>fr Show recent files"
+let g:WhichKeyDesc_file_nav_show_recent_locations = "<leader>fl Show recent locations"
+let g:WhichKeyDesc_file_nav_goto_class = "<leader>fC Go to class"
+let g:WhichKeyDesc_file_nav_goto_symbol = "<leader>fs Go to symbol"
+let g:WhichKeyDesc_file_nav_goto_action = "<leader>fa Go to action"
+
+let g:WhichKeyDesc_buffer_find = "<leader>, Find buffer"
+let g:WhichKeyDesc_buffer_delete = "<leader>bd Delete buffer"
+
+let g:WhichKeyDesc_close_tab = "<leader>q Close active tab"
+
+let g:WhichKeyDesc_refactoring = "<leader>r Refactoring menu"
+let g:WhichKeyDesc_refactoring_rename = "<leader>rn Rename element"
+let g:WhichKeyDesc_refactoring_method = "<leader>rm Extract method"
+let g:WhichKeyDesc_refactoring_variable = "<leader>rv Introduce variable"
+let g:WhichKeyDesc_refactoring_field = "<leader>rf Introduce field"
+let g:WhichKeyDesc_refactoring_signature = "<leader>rs Change signature"
+let g:WhichKeyDesc_refactoring_all = "<leader>rr Open refactorings list"
+
+let g:WhichKeyDesc_goto = "g Go to X"
+let g:WhichKeyDesc_goto_declaration = "gd Go to Definition"
+let g:WhichKeyDesc_goto_type_declaration = "gy Go to Type Definition"
+let g:WhichKeyDesc_goto_implementation = "gi Go to Implementation"
+let g:WhichKeyDesc_goto_usages = "gu Go to Usages"
+
+
+let g:WhichKeyDesc_git = "<leader>g Git"
+let g:WhichKeyDesc_git_diff = "<leader>gd Show diff"
+let g:WhichKeyDesc_git_history = "<leader>gh Show history"
+let g:WhichKeyDesc_git_blame = "<leader>gb Git blame"
+let g:WhichKeyDesc_git_pull = "<leader>gp Git pull"
+let g:WhichKeyDesc_git_push = "<leader>gP Git push"
+let g:WhichKeyDesc_git_commit = "<leader>gc Git commit"
+let g:WhichKeyDesc_git_revert = "<leader>gr Revert changes"
+let g:WhichKeyDesc_git_branches = "<leader>gB Git branches"
+
+let g:WhichKeyDesc_errors = "<leader>e Error navigation"
+let g:WhichKeyDesc_errors_next = "<leader>en Go to next error in solution"
+let g:WhichKeyDesc_errors_prev = "<leader>ep Go to previous error in solution"
+
+
+"" Key mappings
+
+inoremap jk <Esc>
+
+" Ace Jump
+map s <Action>(AceAction)
+
+" Tab navigation
+nnoremap <A-n> :tabnext<CR>
+nnoremap <A-p> :tabprev<CR>
+
+" Pane navigation
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+nnoremap <C-k> <C-w>k
+nnoremap <C-j> <C-w>j
+
+" Jump between methods
+nnoremap [[ :action MethodUp<CR>
+nnoremap ]] :action MethodDown<CR>
+
+" Better line navigation
+nnoremap H ^
+nnoremap L $
+
+" Better visual selection "
+vnoremap + <Action>(EditorSelectWord)
+vnoremap _ <Action>(EditorUnSelectWord)
+
+" Center screen after jumping
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+nnoremap n nzz
+nnoremap N Nzz
+
+" Easy visual indentation
+vnoremap < <gv
+vnoremap > >gv
+
+" Execute macro saved in 'q' register
+nnoremap qj @q
+
+" LSP Popups — handled via IDE Keymap: bind Ctrl+J/K to EditorDown/EditorUp
+
+" Text object & jump remaps — align anyobject keys with treesitter muscle memory
+onoremap ai ay     " conditional outer: ai → ay
+onoremap ii iy     " conditional inner: ii → iy
+onoremap a= av     " assignment outer: a= → av
+onoremap i= iv     " assignment inner: i= → iv
+xnoremap ai ay
+xnoremap ii iy
+xnoremap a= av
+xnoremap i= iv
+nnoremap ]i ]y     " next conditional: ]i → ]y
+nnoremap [i [y     " prev conditional: [i → [y
+xnoremap ]i ]y
+xnoremap [i [y
+onoremap ]i ]y
+onoremap [i [y
+
+"" Leader commands
+
+" Code
+map <leader>ca <action>(ShowIntentionActions)
+map <leader>cc <action>(CommentByLineComment)
+map <leader>cf <action>(ReformatCode)
+map <leader>cr <action>(RenameFile)
+
+" Clear search highlight
+nnoremap <leader>hn :noh<CR>
+
+" Folding
+map <leader>zc :action CollapseAllRegions<CR>
+map <leader>zo :action ExpandAllRegions<CR>
+
+" Window splits
+map <leader>wv <Action>(SplitVertically)
+map <leader>ws <Action>(SplitHorizontally)
+map <leader>wu <Action>(Unsplit)
+map <leader>wm <Action>(MoveEditorToOppositeTabGroup)
+
+" Display options
+map <leader>dd <action>(ToggleDistractionFreeMode)
+map <leader>dz <action>(ToggleZenMode)
+map <leader>df <action>(ToggleFullScreen)
+
+" Actions
+map <leader>as <action>(SearchEverywhere)
+
+" File navigation and utility
+map <leader>ff <action>(GotoFile)
+map <leader>fr <action>(RecentFiles)
+map <leader>fc <action>(FindInPath)
+map <leader>fl <action>(RecentLocations)
+map <leader>fs <action>(GotoSymbol)
+map <leader>fa <action>(GotoAction)
+map <leader>fC <action>(GotoClass)
+
+" Buffer operations
+map <leader>, <action>(Switcher)
+map <leader>bd <action>(CloseContent)
+
+" Close active tab
+map <leader>q <action>(CloseContent)
+
+" Refactoring
+map <leader>rn <Action>(RenameElement)
+map <leader>rm <Action>(ExtractMethod)
+map <leader>rv <Action>(IntroduceVariable)
+map <leader>rf <Action>(IntroduceField)
+map <leader>rs <Action>(ChangeSignature)
+map <leader>rr <Action>(Refactorings.QuickListPopupAction)
+
+" Go to code (standard Vim style, no leader)
+nmap gd <Action>(GotoDeclaration)
+nmap gy <Action>(GotoTypeDeclaration)
+nmap gi <Action>(GotoImplementation)
+nmap gu <Action>(ShowUsages)
+
+" Git
+map <leader>gd <Action>(Compare.SameVersion)
+map <leader>gh <Action>(Vcs.ShowTabbedFileHistory)
+map <leader>gb <Action>(Annotate)
+map <leader>gp <Action>(Vcs.UpdateProject)
+map <leader>gP <Action>(Vcs.Push)
+map <leader>gc <Action>(CheckinProject)
+map <leader>gr <Action>(ChangesView.Revert)
+map <leader>gB <Action>(Git.Branches)
+
+" Git Buffer
+map ]h <Action>(VcsShowNextChangeMarker)
+map [h <Action>(VcsShowPrevChangeMarker)
+map <leader>ghs <Action>(Git.Stage)
+map <leader>ghu <Action>(Git.Unstage)
+map <leader>ghr <Action>(Vcs.RollbackChangedLines)
+map <leader>ghp <Action>(VcsShowCurrentChangeMarker)
+
+" Errors & File Tree
+map <leader>en <Action>(GotoNextError)
+map <leader>ep <Action>(GotoPreviousError)
+map <leader>ef <Action>(SelectInProjectView)

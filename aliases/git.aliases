@@ -1,0 +1,66 @@
+# Lazy
+alias lzg="lazygit"
+
+# Status
+alias gs="git status -b"
+alias gss="git status -s -b"
+alias gsi="git status -b --ignored"
+
+# Diff
+alias gd="git diff -p --stat --patience"
+alias gdf="git diff --stat"
+
+# Log
+alias gl="git log --graph"
+alias gln="git log --graph -n"
+alias gls="git log --graph --since"
+alias glaf="git log --graph --after"
+alias glg="git log --graph --oneline --decorate --all -15"
+
+# Add & Commit
+alias ga="git add"
+alias gaa="git add ."
+alias gc="git commit"
+alias gcm="git commit -m"
+
+# Branching
+alias gb="git branch"
+alias gba="git branch -a"
+alias gbd="git branch -d"
+
+# Switching
+alias gsw="git switch"
+alias gsc="git switch -c"
+
+# Pushing
+alias gp="git push"
+alias gpu="git push -u"
+
+# Pull & Fetch
+alias gpl="git pull -v"
+alias gcl="git clone"
+alias gf="git fetch"
+
+# Merging
+alias gm="git merge"
+alias gmab="git merge --abort"
+
+# Stash Operations
+alias gst="git stash"
+alias gsta="git stash apply"
+alias gstp="git stash pop"
+alias gstl="git stash list"
+alias gstm="git stash push -m"
+
+# Undo & Reset
+alias gu="git restore --staged"
+alias gr1="git reset HEAD~1"
+alias grs="git reset --soft"
+alias grm="git reset --mixed"
+alias grh="git reset --hard"
+
+# Remote Checking
+alias guser="git config --global user.name"
+alias gemail="git config --global user.email"
+alias grb="git remote -vv"
+alias gbr="git branch -vv"
