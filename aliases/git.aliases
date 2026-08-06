@@ -1,6 +1,3 @@
-# Lazy
-alias lzg="lazygit"
-
 # Status
 alias gs="git status -b"
 alias gss="git status -s -b"

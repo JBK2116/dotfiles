@@ -12,10 +12,6 @@ alias bh='bat --highlight-line=1'            # highlight first line (or use for 
 alias bf='bat --wrap=never'                  # avoid line wrapping for long lines
 alias bnb='bat --style=numbers,changes'      # show line numbers and Git changes
 
-# Virtualization
-alias vboxon="sudo modprobe -r kvm_intel kvm"
-alias vboxoff="sudo modprobe kvm kvm_intel"
-
 # Clipboard
 alias pbcopy='xclip -selection clipboard' # best used with pipe | 
 alias pbpaste='xclip -selection clipboard -o' # best used with > 
