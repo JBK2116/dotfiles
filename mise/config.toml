@@ -36,6 +36,8 @@ cmake = "latest"
 "aqua:junegunn/fzf" = "latest"
 "aqua:sharkdp/fd" = "latest"
 "aqua:eza-community/eza" = "latest"
+"aqua:docker/cli" = "latest"
+"aqua:jesseduffield/lazydocker" = "latest"
 
 [settings]
 # Automatically sets JAVA_HOME whenever a Java version is active
