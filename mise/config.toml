@@ -53,5 +53,13 @@ go.set_goroot = true
 go.set_gopath = true
 
 [tasks.setup]
-# change dnf to match the environments proper package manager
-run = "sudo dnf install -y unzip gcc tar curl xclip tree && npm install -g tree-sitter-cli"
+run = """
+set -e
+if command -v dnf >/dev/null; then PM="sudo dnf install -y"
+elif command -v apt >/dev/null; then PM="sudo apt install -y"
+elif command -v brew >/dev/null; then PM="brew install"
+else echo "No supported package manager found" && exit 1
+fi
+$PM unzip gcc make tar curl xclip tree git pkg-config
+npm install -g tree-sitter-cli
+"""
