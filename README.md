@@ -17,22 +17,17 @@ This repo is structured around a terminal focused workflow. The dotfiles cover a
 ```bash
 # 1. Clone the repo
 git clone <repo-url> ~/dotfiles
-# 2. Run symlinks to wire configs
-ln -sf ~/dotfiles/nvim ~/.config/nvim
-ln -sf ~/dotfiles/tmux/tmux.conf ~/.config/tmux/tmux.conf
-ln -sf ~/dotfiles/mise/ ~/.config/mise/config.toml
-ln -sf ~/dotfiles/zshrc ~/.config/zshrc
-ln -sf ...
-# 3. Install terminal (only works on macOS/Linux)
+# 2. Run symlinks to wire configs (each tool has a SYMLINK comment showcasing how to configure them)
 curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 # 4. Install shell
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 # 5. Install mise
 https://mise.jdx.dev/installing-mise.html#dnf
 # 6. Build mise environment
-mise install -vf
-# 7. Build neovim environment
-mise run setup-nvim
+mise install
+mise trust dotfiles
+# 7. Build dev environment
+mise run setup
 
 ```
 
