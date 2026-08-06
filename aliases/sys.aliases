@@ -54,9 +54,6 @@ alias rgc='rg --color=auto'           # Search with color output, ignores .gitig
 alias rgi='rg --files | fzf'          # Interactive fuzzy search in files
 alias rgv='rg -n | fzf | awk -F: '\''{print $1 ":" $2}'\'' | xargs vim'  # Search pattern and open selected line in Vim
 
-#Ubuntu Management
-alias update+upgrade="sudo apt update && sudo apt upgrade"
-
 # FZF 
 alias bat='bat'
 alias fzp='fzf --preview "cat --style=numbers --color=always {}" --height 60%'
@@ -64,7 +61,7 @@ alias ff='fzf --preview "cat --color=always --style=numbers --line-range=:500 {}
 alias fzh='eval $(history | fzf --tac --no-sort | sed "s/^ *[0-9]* *//")'
 alias ef='nvim $(fzf)'
 alias rmf='rm $(fzf)'
-alias cdf='cd $(find . -type d | fzf)'
+alias cdf='cd $(fd . -type d | fzf)'
 
 # Tree 
 alias tr='tree -C -h -t -f -D --gitignore'
@@ -72,18 +69,6 @@ alias trall='tree -C -h -t -f -a -D'
 alias trl='tree -C -h -t --gitignore -L'
 alias trd='tree -C -h -t -f -d -D --gitignore'
 
-# Nginx
-alias ngstart='systemctl start nginx'
-alias ngstop='systemctl stop nginx'
-alias ngrestart='systemctl restart nginx'
-alias ngreload='nginx -t && systemctl reload nginx'
-alias ngstatus='systemctl status nginx'
-alias ngtest='nginx -t'
-alias ngenable='sudo systemctl enable nginx'
-alias ngdisable='sudo systemctl disable nginx'
-alias ngenabled='systemctl is-enabled nginx'
-alias nlogs='tail -f /var/log/nginx/error.log'
-alias alogs='tail -f /var/log/nginx/access.log'
 
 # Eza (ls replacement)
 alias ls='eza --icons'                              # default ls with icons
