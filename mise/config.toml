@@ -23,6 +23,7 @@ cmake = "latest"
 "aqua:neovim/neovim" = "latest"
 
 # CLI Tools
+"aqua:cli/cli" = "latest"
 "aqua:BurntSushi/ripgrep" = "latest"
 "aqua:ajeetdsouza/zoxide" = "latest"
 "aqua:atuinsh/atuin" = "latest"
@@ -34,6 +35,7 @@ cmake = "latest"
 "aqua:tmux/tmux-builds" = "latest"
 "aqua:junegunn/fzf" = "latest"
 "aqua:sharkdp/fd" = "latest"
+"aqua:eza-community/eza" = "latest"
 
 [settings]
 # Automatically sets JAVA_HOME whenever a Java version is active
@@ -44,10 +46,10 @@ auto_install = true
 color_theme = "auto"
 # Another version of auto_install
 not_found_auto_install = true
-# Automatically sets GOROOT and adds GOPATH/bin to your PATH
+# Automatically sets GOROOT and adds GOPATH/bin to PATH
 go.set_goroot = true
 go.set_gopath = true
 
-[tasks.setup-nvim]
+[tasks.setup]
 # change dnf to match the environments proper package manager
-run = "sudo dnf install -y unzip gcc tar curl && npm install -g tree-sitter-cli"
+run = "sudo dnf install -y unzip gcc tar curl xclip tree && npm install -g tree-sitter-cli"
