@@ -70,7 +70,7 @@ return {
           replace = true,
           render = "markdown",
           format = { "{message}" },
-          win_options = { concealcursor = "n", conceallevel = 3 },
+          win_options = { concealcursor = "nc", conceallevel = 2 },
         },
       },
     },
@@ -130,8 +130,9 @@ return {
         },
       },
       hover = {
-        border = { style = "none" },
-        position = { row = 2 },
+        border = { style = "rounded", padding = { 0, 1 } },
+        position = { row = 2, col = 0 },
+        size = { max_height = 16, max_width = 80 },
         win_options = {
           winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
           wrap = true,
