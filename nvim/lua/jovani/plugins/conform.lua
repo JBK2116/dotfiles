@@ -31,6 +31,7 @@ return {
       format_on_save = {
         lsp_format = "fallback",
         timeout_ms = 3000,
+        quiet = true, -- silence errors on automatic formatting
       },
     })
 
