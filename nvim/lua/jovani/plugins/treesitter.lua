@@ -265,6 +265,15 @@ return {
           vim.wo.foldenable = false
         end,
       })
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "*",
+        callback = function(args)
+          local ft = vim.bo[args.buf].filetype
+          if vim.treesitter.language.get_lang(ft) then
+            pcall(vim.treesitter.start, args.buf, ft)
+          end
+        end,
+      })
     end,
   },
 }
