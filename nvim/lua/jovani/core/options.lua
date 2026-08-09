@@ -16,6 +16,8 @@ opt.cursorline = true
 opt.termguicolors = true
 opt.background = "dark"
 opt.signcolumn = "yes"
+-- keep cursor vertically centered at all times
+opt.scrolloff = 999
 -- backspace
 opt.backspace = "indent,eol,start"
 -- clipboard

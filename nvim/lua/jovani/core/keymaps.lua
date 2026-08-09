@@ -45,9 +45,7 @@ keymap.set("n", "L", "$", { desc = "Go to last character" })
 keymap.set("v", "<", "<gv", { desc = "Indent left and reselect" })
 keymap.set("v", ">", ">gv", { desc = "Indent right and reselect" })
 
--- Center screen after jumping
-keymap.set("n", "n", "nzz", { desc = "Next search result and center" })
-keymap.set("n", "N", "Nzz", { desc = "Previous search result and center" })
+-- Center screen is handled by scrolloff=999 (see options.lua)
 
 -- Execute macro in q register
 keymap.set("n", "qj", "@q", { desc = "Execute macro in q register" })
@@ -60,8 +58,8 @@ keymap.set("n", "<leader>ep", vim.diagnostic.goto_prev, { desc = "Go to previous
 keymap.set("n", "]q", ":cnext<CR>", { desc = "Go to next quickfix item", silent = true })
 keymap.set("n", "[q", ":cprev<CR>", { desc = "Go to previous quickfix item", silent = true })
 
--- Better function utilization
-vim.keymap.set("n", "]]", "]]wzz", { noremap = true })
-vim.keymap.set("n", "[[", "[[wzz", { noremap = true })
+-- Jump between functions (scrolloff handles centering)
+vim.keymap.set("n", "]]", "]]w", { noremap = true, desc = "Next function" })
+vim.keymap.set("n", "[[", "[[w", { noremap = true, desc = "Previous function" })
 -- Special LSP Information Command
 vim.api.nvim_create_user_command("LspInfo", "checkhealth vim.lsp", { desc = "Show LSP Info" })

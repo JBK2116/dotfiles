@@ -53,6 +53,7 @@
   "onedark.nvim": { "branch": "master", "commit": "df4792accde9db0043121f32628bcf8e645d9aea" },
   "plenary.nvim": { "branch": "master", "commit": "74b06c6c75e4eeb3108ec01852001636d85a932b" },
   "rose-pine": { "branch": "main", "commit": "ff483051a47e27d84bdef47703538df1ed9f4a47" },
+  "scrollEOF.nvim": { "branch": "master", "commit": "e462b9a07b8166c3e8011f1dcbc6bf68b67cd8d7" },
   "smart-paste.nvim": { "branch": "main", "commit": "bb46e9a06a728d65f004ad709ff7ee0249717e5e" },
   "snacks.nvim": { "branch": "main", "commit": "882c996cf28183f4d63640de0b4c02ec886d01f2" },
   "spring-boot.nvim": { "branch": "main", "commit": "218c0c26c14d99feca778e4d13f5ec3e8b1b60f0" },
