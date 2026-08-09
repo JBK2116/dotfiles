@@ -13,7 +13,7 @@ return {
     { "<leader>fr", "<cmd>FzfLua oldfiles<CR>", desc = "Recent Files" },
     { "<leader>,", "<cmd>FzfLua buffers<CR>", desc = "Buffers" },
     -- Search
-    { "<leader>/", "<cmd>FzfLua live_grep<CR>", desc = "Grep" },
+    { "<leader>fc", "<cmd>FzfLua live_grep<CR>", desc = "Find Content" },
     -- LSP
     { "gd", "<cmd>FzfLua lsp_definitions<CR>", desc = "Goto Definition" },
     { "gD", "<cmd>FzfLua lsp_declarations<CR>", desc = "Goto Declaration" },
@@ -25,12 +25,14 @@ return {
     },
     { "gI", "<cmd>FzfLua lsp_implementations<CR>", desc = "Goto Implementation" },
     { "gy", "<cmd>FzfLua lsp_typedefs<CR>", desc = "Goto Type Definition" },
-    { "<leader>ss", "<cmd>FzfLua lsp_document_symbols<CR>", desc = "LSP Symbols" },
+    { "<leader>fs", "<cmd>FzfLua lsp_document_symbols<CR>", desc = "Document Symbols" },
     {
-      "<leader>sS",
+      "<leader>fS",
       "<cmd>FzfLua lsp_live_workspace_symbols<CR>",
-      desc = "LSP Workspace Symbols",
+      desc = "Workspace Symbols",
     },
+    -- Commands
+    { "<leader>fa", "<cmd>FzfLua commands<CR>", desc = "Commands" },
     -- Colorschemes
     { "<leader>uC", "<cmd>FzfLua colorschemes<CR>", desc = "Colorschemes" },
   },
