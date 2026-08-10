@@ -34,6 +34,7 @@ return {
           "html",
           "xml",
           "css",
+          "latex",
         },
         auto_install = true,
       })

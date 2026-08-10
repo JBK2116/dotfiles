@@ -62,4 +62,5 @@ else echo "No supported package manager found" && exit 1
 fi
 $PM unzip gcc make tar curl xclip tree git pkg-config
 npm install -g tree-sitter-cli
+pip install pylatexenc
 """
