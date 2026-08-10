@@ -53,7 +53,7 @@ return {
     -- Use Obsidian-style wiki links: [[note]]
     preferred_link_style = "wiki",
 
-    -- Disable built-in UI: markview.nvim handles all markdown rendering
+    -- Disable built-in UI: render-markdown.nvim handles all markdown rendering
     ui = {
       enable = false,
     },
