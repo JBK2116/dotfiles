@@ -132,6 +132,20 @@ return {
     -- docker-compose: IntelliSense for compose files (uses yaml.docker-compose filetype)
     vim.lsp.config.docker_compose_language_service = {}
 
+    -- typos-lsp: Autocorrect in neovim
+    vim.lsp.config("typos_lsp", {
+      -- must be installed in path
+      cmd = { "typos-lsp" },
+      -- log level
+      cmd_env = { RUST_LOG = "typos_lsp=error" },
+      -- init starutp options
+      init_options = {
+        -- How typos are rendered in the editor, can be one of an Error, Warning, Info or Hint.
+        -- Defaults to Info.
+        diagnosticSeverity = "Info",
+      },
+    })
+
     -- Extra lsp configurations (Now properly inheriting global settings)
     vim.lsp.config.cssls = {}
     vim.lsp.config.prismals = {}
@@ -170,6 +184,7 @@ return {
       "tsgo",
       "dockerls",
       "docker_compose_language_service",
+      "typos_lsp",
     })
   end,
 }

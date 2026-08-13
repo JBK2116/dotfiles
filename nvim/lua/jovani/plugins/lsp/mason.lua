@@ -22,6 +22,7 @@ return {
         "tsgo", -- TypeScript
         "dockerls", -- Dockerfile
         "docker_compose_language_service", -- docker-compose
+        "typos-lsp", -- Spelling
       },
       automatic_enable = false,
     },

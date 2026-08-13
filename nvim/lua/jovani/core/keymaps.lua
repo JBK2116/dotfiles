@@ -13,6 +13,9 @@ keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 -- Clear search highlights
 keymap.set("n", "hn", ":nohl<CR>", { desc = "Clear search highlights" })
 
+-- Spelling
+keymap.set("n", "z=", "1z=", { desc = "Replace with best spelling suggestion" })
+
 -- Increment/decrement numbers
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" })
 keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" })
