@@ -36,8 +36,6 @@ set highlightedyank " highlight objects that have just been yanked
 set anyobject     " semantic text objects: aa/ia args, ac/ic class, af/if func, al/il loop, ay/iy conditional, av/iv assignment
 set textobj-entire      " vae/vie to select entire file
 set exchange            " cx to swap two text objects
-set ReplaceWithRegister " gr to replace motion with register contents
-set peekaboo            " see register contents before pasting
 
 " Easymotion settings
 set notimeout
@@ -45,7 +43,7 @@ set notimeout
 " Which-key settings
 set which-key
 let g:WhichKey_FontSize = 16
-let g:WhichKeyDesc_acejump = "s AceJump"
+let g:WhichKeyDesc_flash = "s Flash search jump"
 let g:WhichKey_CommandColor = "#41ead4"
 let g:WhichKey_PrefixColor = "#f335b2"
 let g:WhichKey_SortOrder = "by_key_prefix_first"
@@ -90,6 +88,9 @@ let g:WhichKeyDesc_buffer_find = "<leader>, Find buffer"
 let g:WhichKeyDesc_buffer_delete = "<leader>bd Delete buffer"
 
 let g:WhichKeyDesc_close_tab = "<leader>q Close active tab"
+let g:WhichKeyDesc_tab = "<leader>t Tabs"
+let g:WhichKeyDesc_tab_next = "<leader>tn Next tab"
+let g:WhichKeyDesc_tab_prev = "<leader>tp Previous tab"
 
 let g:WhichKeyDesc_refactoring = "<leader>r Refactoring menu"
 let g:WhichKeyDesc_refactoring_rename = "<leader>rn Rename element"
@@ -103,12 +104,12 @@ let g:WhichKeyDesc_goto = "g Go to X"
 let g:WhichKeyDesc_goto_declaration = "gd Go to Definition"
 let g:WhichKeyDesc_goto_type_declaration = "gy Go to Type Definition"
 let g:WhichKeyDesc_goto_implementation = "gi Go to Implementation"
-let g:WhichKeyDesc_goto_usages = "gu Go to Usages"
+let g:WhichKeyDesc_goto_usages = "gr Go to Usages"
 
 
 let g:WhichKeyDesc_git = "<leader>g Git"
 let g:WhichKeyDesc_git_diff = "<leader>gd Show diff"
-let g:WhichKeyDesc_git_history = "<leader>gh Show history"
+let g:WhichKeyDesc_git_hunk = "<leader>gh Git hunk"
 let g:WhichKeyDesc_git_blame = "<leader>gb Git blame"
 let g:WhichKeyDesc_git_pull = "<leader>gp Git pull"
 let g:WhichKeyDesc_git_push = "<leader>gP Git push"
@@ -125,12 +126,13 @@ let g:WhichKeyDesc_errors_prev = "<leader>ep Go to previous error in solution"
 
 inoremap jk <Esc>
 
-" Ace Jump
-map s <Action>(AceAction)
+" Flash search labels (vim-flash)
+nmap s <Action>(flash.search)
+xmap s <Action>(flash.search)
 
 " Tab navigation
-nnoremap <A-n> :tabnext<CR>
-nnoremap <A-p> :tabprev<CR>
+nnoremap <leader>tn :tabnext<CR>
+nnoremap <leader>tp :tabprev<CR>
 
 " Pane navigation
 nnoremap <C-h> <C-w>h
@@ -159,9 +161,6 @@ nnoremap N Nzz
 " Easy visual indentation
 vnoremap < <gv
 vnoremap > >gv
-
-" Execute macro saved in 'q' register
-nnoremap qj @q
 
 " LSP Popups — handled via IDE Keymap: bind Ctrl+J/K to EditorDown/EditorUp
 
@@ -238,7 +237,7 @@ map <leader>rr <Action>(Refactorings.QuickListPopupAction)
 nmap gd <Action>(GotoDeclaration)
 nmap gy <Action>(GotoTypeDeclaration)
 nmap gi <Action>(GotoImplementation)
-nmap gu <Action>(ShowUsages)
+nmap gr <Action>(ShowUsages)
 
 " Git
 map <leader>gd <Action>(Compare.SameVersion)
