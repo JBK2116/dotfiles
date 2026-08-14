@@ -19,7 +19,7 @@ return {
         "prismals", -- Build
         "eslint", -- JavaScript
         "ruff", -- Python
-        "tsgo", -- TypeScript
+        "vtsls", -- TypeScript
         "dockerls", -- Dockerfile
         "docker_compose_language_service", -- docker-compose
         "typos-lsp", -- Spelling

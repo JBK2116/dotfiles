@@ -12,7 +12,8 @@ python = { version = "latest", postinstall = "pip install pipx" }
 "aqua:astral-sh/uv" = "latest"
 # Javascript
 node = "latest"
-npm = "latest"
+npm = { version = "latest", postinstall = "npm install -g typescript" }
+"npm:typescript" = "latest"
 # Rust
 rust = "latest"
 # C/C++

@@ -83,8 +83,8 @@ return {
       },
     }
 
-    -- tsgo: native TS/JS lsp for non-svelte projects
-    vim.lsp.config.tsgo = {}
+    -- vtsls: native TS/JS lsp for non-svelte projects
+    vim.lsp.config.vtsls = {}
 
     -- clangd: keep indexing, skip clang-tidy
     vim.lsp.config.clangd = {
@@ -181,7 +181,7 @@ return {
       "prismals",
       "eslint",
       "ruff",
-      "tsgo",
+      "vtsls",
       "dockerls",
       "docker_compose_language_service",
       "typos_lsp",
