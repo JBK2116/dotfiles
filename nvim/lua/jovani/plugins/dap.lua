@@ -3,7 +3,7 @@
 -- a debug session, and nvim-nio is the async library it depends on.
 --
 -- Language-specific adapters live in separate files:
---   dap-python.lua  dap-go.lua  dap-js.lua  java.lua
+--   dap-python.lua  dap-go.lua  dap-js.lua
 return {
   {
     "mfussenegger/nvim-dap",

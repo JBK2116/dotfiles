@@ -37,7 +37,6 @@ return {
       { "<leader>o", group = "docs" },
       { "<leader>t", group = "tabs" },
       { "<leader>w", group = "windows" },
-      { "<leader>j", group = "java" },
       { "g", group = "goto" },
       { "ga", group = "calls" },
       { "m", group = "mark" },

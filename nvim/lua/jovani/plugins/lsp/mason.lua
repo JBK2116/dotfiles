@@ -22,7 +22,7 @@ return {
         "vtsls", -- TypeScript
         "dockerls", -- Dockerfile
         "docker_compose_language_service", -- docker-compose
-        "typos-lsp", -- Spelling
+        "typos_lsp", -- Spelling
       },
       automatic_enable = false,
     },
@@ -31,7 +31,6 @@ return {
         "williamboman/mason.nvim",
         opts = {
           registries = {
-            "github:nvim-java/mason-registry",
             "github:mason-org/mason-registry",
           },
           ui = {
@@ -55,8 +54,6 @@ return {
         "clang-format", -- C/C++
         "goimports", -- Golang
         "golangci-lint", -- Golang
-        "google-java-format", -- Java
-        "checkstyle", -- Java
         "hadolint", -- Dockerfile linter
         "debugpy", -- Python DAP (nvim-dap-python)
         "delve", -- Go DAP (nvim-dap-go)
