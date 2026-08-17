@@ -57,6 +57,7 @@ return {
         "hadolint", -- Dockerfile linter
         "debugpy", -- Python DAP (nvim-dap-python)
         "delve", -- Go DAP (nvim-dap-go)
+        "checkmake", -- Makefile
       },
     },
     dependencies = { "williamboman/mason.nvim" },

@@ -12,6 +12,7 @@ return {
       html = { "htmlhint" },
       -- css = { "stylelint" }, Disable this only if you are using raw css
       go = { "golangcilint" },
+      make = { "checkmake" },
     }
 
     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
