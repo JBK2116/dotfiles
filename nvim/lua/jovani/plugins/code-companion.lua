@@ -1,6 +1,6 @@
 -- Configures CodeCompanion, the in-editor AI assistant. Wires up DeepSeek
 -- V4 adapters (V4-Pro Premium Reasoner for complex chat, V4-Flash Efficient
--- Chat for inline/cmd/background) and Brave Search via MCP, defines keymaps
+-- Chat for background) and Brave Search via MCP, defines keymaps
 -- for chat, inline edits, the action palette, and CLI-driven workflows, plus
 -- a custom prompt library and auto-generated chat titles.
 local spec = {
@@ -81,7 +81,7 @@ local spec = {
       desc = "AI New chat (Chat)",
     },
 
-    -- New Chat with Web Search (V4-Flash + Brave Search MCP)
+    -- New Chat with Web Search (Reasoner + Brave Search MCP)
     {
       "<leader>aw",
       function()
@@ -117,7 +117,7 @@ local spec = {
               placement = placement,
             })
             if inline then
-              inline:prompt(input)
+              inline:prompt(input .. "\n\n#{buffer}")
             end
           end
         end)
@@ -163,13 +163,13 @@ local spec = {
         prompts = {
           {
             role = "system",
-            content = "You are an expert programmer who excels at explaining code clearly. Provide thorough explanations covering what the code does, how it works, and any notable patterns or potential issues.",
+            content = "You are a senior engineer explaining code to another engineer. Explain what the code does, how it works, and any notable patterns, risks, or non-obvious behavior. Reference the surrounding file/module conventions if relevant. Skip filler like 'this code does X' restatements — get straight to substance.",
           },
           {
             role = "user",
             content = function(context)
               local text = require("codecompanion.helpers.code").get_code(context.start_line, context.end_line)
-              return "Explain this code:\n\n```" .. context.filetype .. "\n" .. text .. "\n```"
+              return "Explain this code:\n\n```" .. context.filetype .. "\n" .. text .. "\n```\n\n#{buffer}"
             end,
           },
         },
@@ -181,13 +181,17 @@ local spec = {
         prompts = {
           {
             role = "system",
-            content = "You are an expert at writing tests. Generate comprehensive, well-structured unit tests covering normal cases, edge cases, and error conditions. Use the appropriate test framework for the language.",
+            content = "You are a senior engineer writing tests for this codebase. Detect the existing test framework, assertion style, mocking patterns, and file/naming conventions from context before writing anything — match them exactly rather than introducing your own. Cover normal cases, edge cases, and error conditions, but do not pad with redundant or trivial tests. No commented-out placeholders, no TODO stubs.",
           },
           {
             role = "user",
             content = function(context)
               local text = require("codecompanion.helpers.code").get_code(context.start_line, context.end_line)
-              return "Write unit tests for this code:\n\n```" .. context.filetype .. "\n" .. text .. "\n```"
+              return "Write unit tests for this code:\n\n```"
+                .. context.filetype
+                .. "\n"
+                .. text
+                .. "\n```\n\n#{buffer}"
             end,
           },
         },
@@ -199,25 +203,29 @@ local spec = {
         prompts = {
           {
             role = "system",
-            content = "You are an expert code reviewer. Analyze the code for bugs, security issues, performance problems, and adherence to best practices. Provide specific, actionable feedback.",
+            content = "You are a senior engineer doing a real code review, not a linter. Flag actual bugs, security issues, and violations of this codebase's own conventions — not generic best-practice trivia that doesn't apply here. Use #{lsp} and #{diagnostics} context if present to ground findings in real errors, not guesses. Skip praise and preamble. If something is fine, don't comment on it. Be specific: line references, not vague generalities.",
           },
           {
             role = "user",
             content = function(context)
               local text = require("codecompanion.helpers.code").get_code(context.start_line, context.end_line)
-              return "Review this code:\n\n```" .. context.filetype .. "\n" .. text .. "\n```"
+              return "Review this code:\n\n```"
+                .. context.filetype
+                .. "\n"
+                .. text
+                .. "\n```\n\n#{buffer}\n#{lsp}\n#{diagnostics}"
             end,
           },
         },
       },
       ["Optimize Code"] = {
         interaction = "inline",
-        adapter = "chat",
+        adapter = "reasoner",
         description = "Optimize the selected code inline",
         prompts = {
           {
             role = "system",
-            content = "You are an expert at code optimization. Rewrite the code for performance, readability, and maintainability. Output only the optimized code, no explanations.",
+            content = "You are a senior engineer optimizing code for performance, readability, and maintainability. Preserve the existing code style (naming, formatting, error handling patterns) exactly. Do not introduce new dependencies or patterns not already used in the file. Output only the optimized code — no explanations, no comments about what changed.",
           },
           {
             role = "user",
@@ -227,12 +235,12 @@ local spec = {
       },
       ["Fix LSP Diagnostics"] = {
         interaction = "inline",
-        adapter = "chat",
+        adapter = "reasoner",
         description = "Fix LSP diagnostics inline",
         prompts = {
           {
             role = "system",
-            content = "You are an expert at fixing code issues. Fix ALL LSP diagnostics shown below. Output the complete corrected file — no explanations, no markdown fences, just the fixed code.",
+            content = "You are a senior engineer fixing real compiler/linter errors, not guessing. Fix ALL LSP diagnostics shown below using the minimal correct change — do not refactor unrelated code or change style. Output the complete corrected file — no explanations, no markdown fences, just the fixed code.",
           },
           {
             role = "user",
@@ -271,7 +279,7 @@ local spec = {
         prompts = {
           {
             role = "system",
-            content = "You are an expert code reviewer. Review the git diff and provide feedback on the changes, checking for bugs, security issues, and best practices.",
+            content = "You are a senior engineer reviewing a diff before it's committed. Focus on bugs, security issues, and consistency with the rest of the codebase — not generic style nits. Skip praise and preamble. Call out anything risky (data loss, breaking changes, missing error handling) explicitly.",
           },
           {
             role = "user",
@@ -292,7 +300,7 @@ local spec = {
       },
       ["Add Docstrings"] = {
         interaction = "inline",
-        adapter = "chat",
+        adapter = "reasoner",
         description = "Add docstrings to the selected function",
         opts = {
           placement = "replace",
@@ -300,7 +308,7 @@ local spec = {
         prompts = {
           {
             role = "system",
-            content = "You are an expert at writing clear and comprehensive documentation. Add or improve docstrings using the appropriate format (JSDoc, Python docstrings, LuaDoc, etc.). Follow the existing conventions.",
+            content = "You are a senior engineer maintaining this codebase. Before writing docstrings, infer the project's existing docstring convention from #{buffer} — style, verbosity, whether params/returns/throws are documented, punctuation habits. Match it exactly. Do not add generic boilerplate, do not restate the function name in prose, do not comment on trivial lines. If a function is already well-documented, leave it unchanged.",
           },
           {
             role = "user",
@@ -345,16 +353,13 @@ local spec = {
           })
         end,
 
-        -- Fast Web Search — V4-Flash (same model, dedicated adapter for MCP Brave Search)
+        -- Web Search — V4-Pro (dedicated adapter for MCP Brave Search, needs real reasoning to use results well)
         web_search = function()
           return require("codecompanion.adapters").extend("deepseek", {
             name = "web_search",
             schema = {
               model = {
-                default = "deepseek-v4-flash",
-              },
-              ["thinking.type"] = {
-                default = "disabled",
+                default = "deepseek-v4-pro",
               },
             },
             env = {
@@ -389,12 +394,12 @@ local spec = {
         adapter = "reasoner",
       },
 
-      -- Inline In Editor — uses chat adapter (V4-Flash, thinking disabled for speed)
+      -- Inline In Editor — now uses reasoner: correctness matters more than speed here
       inline = {
-        adapter = "chat",
+        adapter = "reasoner",
       },
 
-      -- Command-line In Editor
+      -- Command-line In Editor — kept fast (flash), low-stakes one-liners
       cmd = {
         adapter = "chat",
       },
