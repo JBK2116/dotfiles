@@ -2,7 +2,8 @@
 -- V4 adapters (V4-Pro Premium Reasoner for complex chat, V4-Flash Efficient
 -- Chat for background) and Brave Search via MCP, defines keymaps
 -- for chat, inline edits, the action palette, and CLI-driven workflows, plus
--- a custom prompt library and auto-generated chat titles.
+-- a custom prompt library, auto-generated chat titles, and persistent
+-- chat history/summaries via codecompanion-history.nvim.
 local spec = {
   "olimorris/codecompanion.nvim",
 
@@ -107,9 +108,6 @@ local spec = {
         local mode = vim.api.nvim_get_mode().mode
         vim.ui.input({ prompt = "CodeCompanion: " }, function(input)
           if input then
-            -- Bypass the :CodeCompanion command so we can force a
-            -- placement, preventing the LLM from choosing "chat" or
-            -- "new" and opening a side buffer.
             local ctx = require("codecompanion.utils.context").get(0)
             local placement = mode:lower() == "v" and "replace" or "add"
             local inline = require("codecompanion.interactions.inline").new({
@@ -133,14 +131,58 @@ local spec = {
       mode = { "n", "v" },
       desc = "AI Actions",
     },
+
+    -- History browser (opens outside a chat buffer too)
+    {
+      "<leader>aH",
+      "<cmd>CodeCompanionHistory<cr>",
+      desc = "AI History browser",
+    },
   },
 
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
+    "ravitemer/codecompanion-history.nvim",
   },
 
   opts = {
+    extensions = {
+      history = {
+        enabled = true,
+        opts = {
+          picker = "snacks",
+          keymap = "gh", -- open history browser
+          save_chat_keymap = "gA", -- manual save (s is taken by Flash)
+
+          picker_keymaps = {
+            rename = { n = "r", i = "<M-r>" },
+            delete = { n = "d", i = "<M-d>" },
+            duplicate = { n = "<C-y>", i = "<C-y>" },
+          },
+
+          summary = {
+            create_summary_keymap = "gcs", -- generate summary for current chat
+            browse_summaries_keymap = "gbs", -- browse saved summaries
+            generation_opts = {
+              adapter = "chat",
+              model = "deepseek-v4-flash",
+            },
+          },
+
+          auto_save = true,
+          expiration_days = 0,
+          continue_last_chat = false,
+          delete_on_clearing_chat = false,
+          auto_generate_title = true,
+          title_generation_opts = {
+            adapter = "chat",
+            model = "deepseek-v4-flash",
+          },
+        },
+      },
+    },
+
     rules = {
       default = {
         description = "Common rule files",
@@ -320,7 +362,6 @@ local spec = {
 
     adapters = {
       http = {
-        -- Premium Reasoner — V4-Pro (1.6T params, thinking enabled, max effort)
         reasoner = function()
           return require("codecompanion.adapters").extend("deepseek", {
             name = "reasoner",
@@ -335,7 +376,6 @@ local spec = {
           })
         end,
 
-        -- Efficient Chat — V4-Flash (284B params, thinking disabled for speed)
         chat = function()
           return require("codecompanion.adapters").extend("deepseek", {
             name = "chat",
@@ -353,7 +393,6 @@ local spec = {
           })
         end,
 
-        -- Web Search — V4-Pro (dedicated adapter for MCP Brave Search, needs real reasoning to use results well)
         web_search = function()
           return require("codecompanion.adapters").extend("deepseek", {
             name = "web_search",
@@ -389,17 +428,14 @@ local spec = {
     },
 
     interactions = {
-      -- Sidebar In Editor
       chat = {
         adapter = "reasoner",
       },
 
-      -- Inline In Editor — now uses reasoner: correctness matters more than speed here
       inline = {
         adapter = "reasoner",
       },
 
-      -- Command-line In Editor — kept fast (flash), low-stakes one-liners
       cmd = {
         adapter = "chat",
       },
