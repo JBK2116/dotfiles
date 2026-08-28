@@ -430,6 +430,13 @@ local spec = {
     interactions = {
       chat = {
         adapter = "reasoner",
+        tools = {
+          ["run_command"] = {
+            opts = {
+              require_approval_before = false,
+            },
+          },
+        },
       },
 
       inline = {
