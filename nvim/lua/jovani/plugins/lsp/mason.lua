@@ -2,7 +2,6 @@
 -- ensures the LSP servers used in lsp.lua are installed, and
 -- mason-tool-installer ensures the formatters/linters (prettier, stylua,
 -- clang-format, goimports, golangci-lint) are present.
--- mason-nvim-dap does the same for DAP debug adapters.
 return {
   {
     "williamboman/mason-lspconfig.nvim",
@@ -55,20 +54,9 @@ return {
         "goimports", -- Golang
         "golangci-lint", -- Golang
         "hadolint", -- Dockerfile linter
-        "debugpy", -- Python DAP (nvim-dap-python)
-        "delve", -- Go DAP (nvim-dap-go)
         "checkmake", -- Makefile
       },
     },
     dependencies = { "williamboman/mason.nvim" },
-  },
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    opts = {
-      ensure_installed = {
-        "js-debug-adapter", -- JavaScript/TypeScript (vscode-js-debug)
-      },
-    },
-    dependencies = { "williamboman/mason.nvim", "mfussenegger/nvim-dap" },
   },
 }
