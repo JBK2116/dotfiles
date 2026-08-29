@@ -252,5 +252,20 @@ return {
       vim.cmd("colorscheme github_dark_default")
     end,
   },
+  {
+    "EdenEast/nightfox.nvim",
+    lazy = true,
+    priority = 1000,
+  },
+  {
+    "scottmckendry/cyberdream.nvim",
+    lazy = true,
+    priority = 1000,
+  },
+  {
+    "sainnhe/sonokai",
+    lazy = true,
+    priority = 1000,
+  },
   -- Add more colorscheme tables from below here. Snacks automatically picks it up
 }
