@@ -14,7 +14,6 @@ return {
     -- Search
     { "<leader>fc", "<cmd>FzfLua live_grep<CR>", desc = "Find Content" },
     { "<leader>fw", "<cmd>FzfLua grep_cword<CR>", desc = "Grep Word Under Cursor" },
-    { "<leader>fR", "<cmd>FzfLua live_grep_resume<CR>", desc = "Resume Last Grep" },
     -- LSP
     { "gd", "<cmd>FzfLua lsp_definitions<CR>", desc = "Goto Definition" },
     { "gD", "<cmd>FzfLua lsp_declarations<CR>", desc = "Goto Declaration" },
