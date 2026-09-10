@@ -19,7 +19,7 @@ return {
     workspaces = {
       {
         name = "notes",
-        path = "~/Obsidian/notes/", -- NOTE: This must match the system path
+        path = "~/Applications/obsidian/", -- NOTE: This must match the system path
       },
     },
 
