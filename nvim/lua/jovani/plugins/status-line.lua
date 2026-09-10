@@ -1,7 +1,7 @@
 -- Configures lualine.nvim, replacing mini.statusline. Git
 -- branch/diff, LSP diagnostics, pending lazy.nvim update count, LSP client
--- name, filetype/encoding, and location — themed to match the active
--- colorscheme via lualine's auto theme.
+-- name, filetype/encoding, location, and pending command keys (showcmd) —
+-- themed to match the active colorscheme via lualine's auto theme.
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -15,7 +15,10 @@ return {
         section_separators = "",
       },
       sections = {
-        lualine_a = { "mode" },
+        -- "%S" renders showcmd (pending command keys) right after the
+        -- mode indicator; it only shows when 'showcmdloc' includes
+        -- "statusline"
+        lualine_a = { "mode", "%S" },
         lualine_b = {
           "branch",
           "diff",

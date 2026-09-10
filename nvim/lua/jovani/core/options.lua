@@ -37,6 +37,8 @@ opt.timeoutlen = 300
 opt.undofile = true
 -- don't show mode in cmdline (lualine handles it)
 opt.showmode = false
+-- show pending keys (showcmd) in the statusline, rendered by lualine's "%S"
+opt.showcmdloc = "statusline"
 -- best-first suggestions; z= applies them without the menu
 opt.spellsuggest = "best,9"
 -- remove ~ in eob lines
