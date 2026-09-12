@@ -66,3 +66,6 @@ vim.keymap.set("n", "]]", "]]w", { noremap = true, desc = "Next function" })
 vim.keymap.set("n", "[[", "[[w", { noremap = true, desc = "Previous function" })
 -- Special LSP Information Command
 vim.api.nvim_create_user_command("LspInfo", "checkhealth vim.lsp", { desc = "Show LSP Info" })
+
+-- Fuzzy pick colortheme
+vim.keymap.set("n", "<leader>rc", ":RecolOpen<CR>")
