@@ -22,6 +22,7 @@ return {
         "dockerls", -- Dockerfile
         "docker_compose_language_service", -- docker-compose
         "typos_lsp", -- Spelling
+        "bashls", -- Bash
       },
       automatic_enable = false,
     },
@@ -55,6 +56,7 @@ return {
         "golangci-lint", -- Golang
         "hadolint", -- Dockerfile linter
         "checkmake", -- Makefile
+        "shellcheck", -- Bash (required by bashls for diagnostics)
       },
     },
     dependencies = { "williamboman/mason.nvim" },

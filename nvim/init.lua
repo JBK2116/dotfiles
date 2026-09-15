@@ -46,3 +46,4 @@ if vim.fn.executable("recol") == 1 then
     launch_interactive_mode()
   end, { nargs = 0 })
 end
+

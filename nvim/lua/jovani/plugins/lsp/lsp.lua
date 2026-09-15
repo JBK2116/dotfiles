@@ -40,6 +40,9 @@ return {
     -- python: fastest lsp (Ty)
     vim.lsp.config.ty = {}
 
+    -- bash: scripting
+    vim.lsp.config.bashls = {}
+
     -- lua_ls: minimal, no workspace spam
     vim.lsp.config.lua_ls = {
       settings = {
@@ -185,6 +188,7 @@ return {
       "dockerls",
       "docker_compose_language_service",
       "typos_lsp",
+      "bashls",
     })
   end,
 }
