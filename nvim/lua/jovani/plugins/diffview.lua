@@ -79,6 +79,7 @@ return {
     view = {
       default = {
         layout = "diff2_horizontal",
+        disable_diagnostics = true,
       },
       merge_tool = {
         layout = "diff3_horizontal",
@@ -86,6 +87,7 @@ return {
       },
       file_history = {
         layout = "diff2_horizontal",
+        disable_diagnostics = true,
       },
     },
 
@@ -109,17 +111,10 @@ return {
 
     -- Hooks for per-buffer customization
     hooks = {
-      diff_buf_read = function(bufnr)
+      diff_buf_read = function()
         vim.opt_local.wrap = false
         vim.opt_local.list = false
         vim.opt_local.colorcolumn = ""
-        local bufname = vim.api.nvim_buf_get_name(bufnr)
-        -- skip detaching if this is a normal file buffer, not a git-blob scratch buffer
-        if bufname:match("^diffview://") then
-          for _, client in pairs(vim.lsp.get_clients({ bufnr = bufnr })) do
-            vim.lsp.buf_detach_client(bufnr, client.id)
-          end
-        end
       end,
     },
 
