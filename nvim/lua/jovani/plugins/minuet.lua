@@ -5,19 +5,19 @@ return {
   event = "VeryLazy",
   config = function()
     vim.keymap.set("i", "<Tab>", function()
-      if require("minuet.virtualtext").action.is_visible() then
-        require("minuet.virtualtext").action.accept()
-        return ""
+      local vt = require("minuet.virtualtext").action
+      if vt.is_visible() then
+        vt.accept()
+      else
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
       end
-      return vim.api.nvim_replace_termcodes("<Tab>", true, false, true)
-    end, { expr = true, desc = "Minuet accept / Tab" })
-
+    end, { desc = "Minuet accept / Tab" })
     require("minuet").setup({
       provider = "openai_fim_compatible",
 
       virtualtext = {
         auto_trigger_ft = { "*" },
-        auto_trigger_ignore_ft = { "help", "TelescopePrompt", "snacks_picker" },
+        auto_trigger_ignore_ft = { "help", "TelescopePrompt", "snacks_picker_input" },
         keymap = {
           accept = "<A-A>",
           accept_line = "<A-a>",
@@ -33,7 +33,7 @@ return {
           api_key = "DEEPSEEK_API_KEY",
           name = "DeepSeek",
           end_point = "https://api.deepseek.com/beta/completions",
-          model = "deepseek-v4-pro",
+          model = "deepseek-flash",
           optional = {
             max_tokens = 256,
             top_p = 0.9,
