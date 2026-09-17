@@ -95,7 +95,15 @@ local opts = {
 
   sources = {
     default = { "lsp", "snippets", "path", "buffer" },
+    per_filetype = {
+      AvanteInput = { "avante", "path" },
+    },
     providers = {
+      avante = {
+        module = "blink-cmp-avante",
+        name = "Avante",
+        score_offset = 20,
+      },
       snippets = {
         score_offset = 4,
         min_keyword_length = 1,
@@ -135,6 +143,7 @@ return {
   version = "1.*",
   dependencies = {
     "rafamadriz/friendly-snippets",
+    "Kaiser-Yang/blink-cmp-avante",
   },
   opts = opts,
   opts_extend = { "sources.default" },
