@@ -33,7 +33,7 @@ return {
           api_key = "DEEPSEEK_API_KEY",
           name = "DeepSeek",
           end_point = "https://api.deepseek.com/beta/completions",
-          model = "deepseek-chat",
+          model = "deepseek-v4-pro",
           optional = {
             max_tokens = 256,
             top_p = 0.9,
