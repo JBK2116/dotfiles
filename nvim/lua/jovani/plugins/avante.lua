@@ -15,6 +15,9 @@ return {
   },
 
   opts = {
+    custom_tools = function()
+      return { require("avante.llm_tools.web_search").web_search_brave }
+    end,
     provider = "deepseek",
     memory_summary_provider = "deepseek-flash",
     instructions_file = "AGENTS.md", -- reuse your existing project rules
@@ -42,9 +45,8 @@ return {
       },
     },
 
-    web_search_engine = {
-      provider = "brave",
-    },
+    web_search_engine = {},
+    disabled_tools = { "web_search_tavily" },
 
     behaviour = {
       auto_suggestions = false, -- ghost-text completions burn tokens; off
