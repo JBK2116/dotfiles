@@ -53,7 +53,7 @@ return {
       minimize_diff = true,
     },
 
-    selector = { provider = "snacks" },
+    selector = { provider = "fzf_lua" },
     input = { provider = "snacks" },
 
     windows = {
