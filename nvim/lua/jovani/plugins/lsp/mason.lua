@@ -9,7 +9,7 @@ return {
       ensure_installed = {
         "tailwindcss", -- CSS
         "graphql", -- GraphQL
-        "ty", -- Python
+        "basedpyright", -- Python
         "lua_ls", -- HTML
         "svelte", -- Svelte
         "clangd", -- C/C++

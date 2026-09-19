@@ -1,6 +1,6 @@
 -- Configures nvim-lspconfig and the per-server LSP setup. Wires blink.cmp
 -- capabilities into every server, sets project-scoped root patterns and
--- tuned settings for each language server (ty, lua_ls, svelte, clangd,
+-- tuned settings for each language server (basedpyright, lua_ls, svelte, clangd,
 -- gopls, ruff, ...), and enables them.
 return {
   "neovim/nvim-lspconfig",
@@ -37,8 +37,18 @@ return {
       root_dir = lsputil.root_pattern(".graphqlrc", ".graphqlrc.json", "graphql.config.js"),
     }
 
-    -- python: fastest lsp (Ty)
-    vim.lsp.config.ty = {}
+    -- python: basedpyright is a stricter, faster pyright fork for type checking + intellisense
+    vim.lsp.config("basedpyright", {
+      settings = {
+        basedpyright = {
+          analysis = {
+            autoSearchPaths = true,
+            diagnosticMode = "openFilesOnly",
+          },
+          disableTaggedHints = true,
+        },
+      },
+    })
 
     -- bash: scripting
     vim.lsp.config.bashls = {}
@@ -175,7 +185,7 @@ return {
     vim.lsp.enable({
       "tailwindcss",
       "graphql",
-      "ty",
+      "basedpyright",
       "lua_ls",
       "svelte",
       "clangd",
