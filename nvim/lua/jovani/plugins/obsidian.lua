@@ -73,5 +73,6 @@ return {
     { "<leader>of", "<cmd>ObsidianFollowLink<cr>", desc = "Follow link" },
     { "<leader>og", "<cmd>ObsidianTags<cr>", desc = "Browse tags" },
     { "<leader>or", "<cmd>ObsidianRename<cr>", desc = "Rename note" },
+    { "<leader>ox", "<cmd>ObsidianToggleCheckbox<cr>", desc = "Toggle checkbox" },
   },
 }
