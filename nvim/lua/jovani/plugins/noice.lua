@@ -90,6 +90,11 @@ return {
         filter = { event = "msg_show", find = "%d+L, %d+B" },
         opts = { skip = true },
       },
+      -- swallow basedpyright startups
+      {
+        filter = { event = "lsp", kind = "progress", find = "basedpyright" },
+        opts = { skip = true },
+      },
       -- swallow search count virtultext noise
       {
         filter = { event = "msg_show", kind = "search_count" },
