@@ -31,6 +31,8 @@ opt.swapfile = false
 opt.conceallevel = 0
 -- faster CursorHold events (default 4000ms is too slow for LSP)
 opt.updatetime = 250
+-- cursor blinking functionality
+opt.guicursor = "n-v-c-sm:block-blinkon500-blinkoff500,i-ci-ve:ver25-blinkon500-blinkoff500,r-cr-o:hor20"
 -- faster key sequence completion
 opt.timeoutlen = 300
 -- keep undo history across sessions
