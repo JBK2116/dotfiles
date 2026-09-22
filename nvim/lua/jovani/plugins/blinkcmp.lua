@@ -14,6 +14,7 @@ local keymap = {
   ["<C-f>"] = { "scroll_documentation_down", "fallback" },
   ["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
   ["<C-e>"] = { "hide", "fallback" },
+  ["<Tab>"] = { "select_and_accept", "fallback" },
 }
 
 ---@type blink.cmp.Config
