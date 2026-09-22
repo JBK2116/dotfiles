@@ -37,13 +37,26 @@ return {
       root_dir = lsputil.root_pattern(".graphqlrc", ".graphqlrc.json", "graphql.config.js"),
     }
 
-    -- python: basedpyright is a stricter, faster pyright fork for type checking + intellisense
+    -- python: basedpyright is a stricter, faster pyright fork for type checking + intellisense.
+    -- Ruff owns linting/formatting, so these overrides keep basedpyright focused on type
+    -- checking and avoid emitting duplicate diagnostics with the ruff server.
     vim.lsp.config("basedpyright", {
       settings = {
         basedpyright = {
+          -- Ruff sorts/fixes imports, so basedpyright's organizer would only fight it.
+          disableOrganizeImports = true,
           analysis = {
             autoSearchPaths = true,
             diagnosticMode = "openFilesOnly",
+            diagnosticSeverityOverrides = {
+              reportUnusedImport = "none",                 -- ruff: F401
+              reportUnusedVariable = "none",               -- ruff: F841
+              reportUnusedParameter = "none",              -- ruff: ARG001
+              reportDuplicateImport = "none",              -- ruff: F811
+              reportUnusedExpression = "none",             -- ruff: B018
+              reportUnusedCallResult = "none",             -- ruff: B018
+              reportUnnecessaryTypeIgnoreComment = "none", -- ruff: PGH003/RUF100
+            },
           },
           disableTaggedHints = true,
         },
@@ -163,12 +176,14 @@ return {
     vim.lsp.config.cssls = {}
     vim.lsp.config.prismals = {}
     vim.lsp.config.eslint = {}
+    -- Ruff: only linting/formatting code actions; basedpyright owns the rest of the LSP
+    -- features. The native ruff server reads its settings from init_options.settings.
     vim.lsp.config.ruff = {
-      settings = {
-        ruff = {
-          fixAll = true, -- Fix all auto-fixable violations
-          organizeImports = true, -- Automatically sort/clean imports
-          unsafeFixes = true, -- Include unsafe fixes (broader coverage)
+      init_options = {
+        settings = {
+          fixAll = true,          -- Register source.fixAll (auto-fixable lint violations)
+          organizeImports = true, -- Register source.organizeImports (import sorting)
+          showSyntaxErrors = false, -- basedpyright reports syntax errors; avoid duplicates
         },
       },
     }
