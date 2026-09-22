@@ -3,6 +3,9 @@
 -- a filesystem watcher for auto-refresh, and Vim-intuitive navigation
 -- mappings (K=parent, J=next sibling, L=open, a=create, d=delete, r=rename).
 --
+-- Git status auto-refreshes by piggybacking on gitsigns' GitSignsUpdate
+-- event, plus FocusGained/TermClose/TermLeave for external git commands.
+--
 -- neo-tree ships with excellent defaults for all file operations:
 --   a=add file, A=add directory, d=delete, r=rename, y=copy, x=cut,
 --   p=paste, c=copy-to, m=move, T=trash, u=undo trash.
@@ -36,6 +39,36 @@ return {
       desc = "Refresh Explorer",
     },
   },
+  -- Auto-refresh git status when git state changes
+  init = function()
+    local timer = vim.uv.new_timer()
+    local function refresh_git()
+      timer:stop()
+      timer:start(
+        200,
+        0,
+        vim.schedule_wrap(function()
+          if package.loaded["neo-tree"] then
+            local events = require("neo-tree.events")
+            events.fire_event(events.GIT_EVENT)
+          end
+        end)
+      )
+    end
+
+    local group = vim.api.nvim_create_augroup("NeoTreeGitRefresh", { clear = true })
+    -- gitsigns watches .git and fires this whenever git state changes
+    vim.api.nvim_create_autocmd("User", {
+      group = group,
+      pattern = "GitSignsUpdate",
+      callback = refresh_git,
+    })
+    -- Catch git commands run in an external terminal or a Neovim terminal
+    vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+      group = group,
+      callback = refresh_git,
+    })
+  end,
   ---@type neotree.Config
   opts = {
     -- Which sources appear in the source selector tabs
