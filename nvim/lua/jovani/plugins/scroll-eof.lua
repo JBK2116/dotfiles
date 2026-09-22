@@ -1,5 +1,7 @@
 return {
   "Aasim-A/scrollEOF.nvim",
   event = "VeryLazy",
-  opts = {},
+  opts = {
+    disabled_filetypes = { "terminal", "Avante", "AvanteInput" },
+  },
 }
