@@ -2,8 +2,7 @@
 -- V4 adapters (V4-Pro Premium Reasoner for complex chat, V4-Flash Efficient
 -- Chat for background) and Brave Search via MCP, defines keymaps
 -- for chat, inline edits, the action palette, and CLI-driven workflows, plus
--- a custom prompt library, auto-generated chat titles, and persistent
--- chat history/summaries via codecompanion-history.nvim.
+-- a custom prompt library and auto-generated chat titles.
 local spec = {
   "olimorris/codecompanion.nvim",
 
@@ -131,58 +130,14 @@ local spec = {
       mode = { "n", "v" },
       desc = "AI Actions",
     },
-
-    -- History browser (opens outside a chat buffer too)
-    {
-      "<leader>aH",
-      "<cmd>CodeCompanionHistory<cr>",
-      desc = "AI History browser",
-    },
   },
 
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
-    "ravitemer/codecompanion-history.nvim",
   },
 
   opts = {
-    extensions = {
-      history = {
-        enabled = true,
-        opts = {
-          picker = "snacks",
-          keymap = "gh", -- open history browser
-          save_chat_keymap = "gA", -- manual save (s is taken by Flash)
-
-          picker_keymaps = {
-            rename = { n = "r", i = "<M-r>" },
-            delete = { n = "d", i = "<M-d>" },
-            duplicate = { n = "<C-y>", i = "<C-y>" },
-          },
-
-          summary = {
-            create_summary_keymap = "gcs", -- generate summary for current chat
-            browse_summaries_keymap = "gbs", -- browse saved summaries
-            generation_opts = {
-              adapter = "chat",
-              model = "deepseek-v4-flash",
-            },
-          },
-
-          auto_save = true,
-          expiration_days = 3,
-          continue_last_chat = false,
-          delete_on_clearing_chat = true,
-          auto_generate_title = true,
-          title_generation_opts = {
-            adapter = "chat",
-            model = "deepseek-v4-flash",
-          },
-        },
-      },
-    },
-
     rules = {
       default = {
         description = "Common rule files",
