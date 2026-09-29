@@ -129,3 +129,6 @@ eval "$(mise activate zsh)"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 eval "$(atuin init zsh)"
+
+# opencode
+export PATH=/home/jovbk/.opencode/bin:$PATH
