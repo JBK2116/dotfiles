@@ -13,15 +13,6 @@ return {
   cmd = "Neogit",
   keys = {
     { "<leader>gg", "<cmd>Neogit<cr>", desc = "Git: Open Neogit" },
-    { "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Git: Commit" },
-    { "<leader>gp", "<cmd>Neogit pull<cr>", desc = "Git: Pull" },
-    { "<leader>gP", "<cmd>Neogit push<cr>", desc = "Git: Push" },
-    { "<leader>gb", "<cmd>Neogit branch<cr>", desc = "Git: Branch" },
-    { "<leader>gR", "<cmd>Neogit rebase<cr>", desc = "Git: Rebase" },
-    { "<leader>gz", "<cmd>Neogit stash<cr>", desc = "Git: Stash" },
-    { "<leader>gm", "<cmd>Neogit merge<cr>", desc = "Git: Merge" },
-    { "<leader>gx", "<cmd>Neogit reset<cr>", desc = "Git: Reset" },
-    { "<leader>gt", "<cmd>Neogit tag<cr>", desc = "Git: Tag" },
   },
   opts = {
     -- UI

@@ -30,13 +30,6 @@ return {
   },
   keys = {
     {
-      "<leader>gd",
-      function()
-        toggle("DiffviewOpen")
-      end,
-      desc = "Git: Toggle worktree diff",
-    },
-    {
       "<leader>gD",
       function()
         toggle("DiffviewOpen HEAD~1")
