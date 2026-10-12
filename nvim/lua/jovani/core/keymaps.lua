@@ -61,6 +61,9 @@ keymap.set("n", "<leader>ep", vim.diagnostic.goto_prev, { desc = "Go to previous
 keymap.set("n", "]q", ":cnext<CR>", { desc = "Go to next quickfix item", silent = true })
 keymap.set("n", "[q", ":cprev<CR>", { desc = "Go to previous quickfix item", silent = true })
 
+-- Reload Current File
+vim.keymap.set("n", "<leader>rf", ":e<CR>", { desc = "Reload current file" })
+
 -- Jump between functions (scrolloff handles centering)
 vim.keymap.set("n", "]]", "]]w", { noremap = true, desc = "Next function" })
 vim.keymap.set("n", "[[", "[[w", { noremap = true, desc = "Previous function" })
