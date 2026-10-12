@@ -267,5 +267,23 @@ return {
     lazy = true,
     priority = 1000,
   },
+  { "Mofiqul/vscode.nvim", name = "vscode", lazy = true, priority = 1000 },
+  {
+    "tiagovla/tokyodark.nvim",
+    opts = {},
+    config = function(_, opts)
+      require("tokyodark").setup(opts)
+      vim.cmd([[colorscheme tokyodark]])
+    end,
+  },
+  {
+    "loctvl842/monokai-pro.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("monokai-pro").setup()
+      vim.cmd.colorscheme("monokai-pro")
+    end,
+  },
   -- Add more colorscheme tables from below here. Snacks automatically picks it up
 }
