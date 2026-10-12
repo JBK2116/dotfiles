@@ -234,6 +234,8 @@ return {
         ts_repeat_move.builtin_T_expr,
         { expr = true, desc = "Repeatable T (backward until char)" }
       )
+      -- register markdown with noice to get markdown syntax highlighting
+      vim.treesitter.language.register("markdown", "noice")
 
       -- Treesitter-based indentation per filetype
       vim.api.nvim_create_autocmd("FileType", {
