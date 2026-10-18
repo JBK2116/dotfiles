@@ -9,15 +9,81 @@ return {
     "MunifTanjim/nui.nvim",
     "rcarriga/nvim-notify",
   },
+  config = function(_, opts)
+    require("noice").setup(opts)
+
+    local function fence_indented(s, lang)
+      local out, in_fence, in_code = {}, false, false
+      for _, line in ipairs(vim.split(s, "\n", { plain = true })) do
+        if line:match("^%s*```") then
+          in_fence = not in_fence
+          table.insert(out, line)
+        elseif in_fence then
+          table.insert(out, line)
+        else
+          local indented = line:match("^    ") or line:match("^\t")
+          if indented and not in_code then
+            in_code = true
+            table.insert(out, "```" .. lang)
+          elseif in_code and line:match("%S") and not indented then
+            in_code = false
+            table.insert(out, "```")
+          end
+          if in_code then
+            line = line:gsub("^    ", ""):gsub("^\t", "")
+          end
+          table.insert(out, line)
+        end
+      end
+      if in_code then
+        table.insert(out, "```")
+      end
+      return table.concat(out, "\n")
+    end
+
+    local function clean(s, lang)
+      s = s:gsub("%[([^%]]*)%]%b()", "_%1_")
+      return fence_indented(s, lang)
+    end
+
+    local function clean_contents(c, lang)
+      if type(c) == "string" then
+        return clean(c, lang)
+      elseif type(c) == "table" then
+        if c.value then
+          c.value = clean(c.value, lang)
+        else
+          for i, item in ipairs(c) do
+            c[i] = clean_contents(item, lang)
+          end
+        end
+      end
+      return c
+    end
+
+    local h = require("noice.lsp.hover")
+    local orig = h.on_hover
+    h.on_hover = function(err, result, ctx, config)
+      if result and result.contents then
+        local lang = ctx and ctx.bufnr and vim.bo[ctx.bufnr].filetype or ""
+        result.contents = clean_contents(result.contents, lang)
+      end
+      return orig(err, result, ctx, config)
+    end
+  end,
+
   opts = {
     -- Cmdline
     cmdline = {
       enabled = true,
       view = "cmdline_popup",
+      win_options = {
+        winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+      },
       format = {
         cmdline = { pattern = "^:", icon = "", lang = "vim" },
-        search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
-        search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
+        search_down = { view = "cmdline", kind = "search", pattern = "^/", icon = " ", lang = "regex" },
+        search_up = { view = "cmdline", kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
         filter = { pattern = "^:%s*!", icon = "", lang = "bash" },
         lua = {
           pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" },
@@ -137,7 +203,7 @@ return {
       hover = {
         border = { style = "rounded", padding = { 0, 1 } },
         position = { row = 2, col = 0 },
-        size = { max_height = 16, max_width = 80 },
+        size = { max_height = 16, max_width = 140, min_width = 80 },
         win_options = {
           winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
           wrap = true,
