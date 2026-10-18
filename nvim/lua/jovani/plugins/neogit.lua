@@ -22,9 +22,10 @@ return {
     disable_relative_line_numbers = true,
     disable_context_highlighting = false,
     disable_signs = false,
-    graph_style = "unicode",
+    graph_style = "kitty",
     process_spinner = false,
     auto_refresh = true,
+    fetch_after_checkout = true,
 
     -- Safety prompts
     prompt_force_push = true,
@@ -72,7 +73,7 @@ return {
     -- Status buffer
     status = {
       show_head_commit_hash = true,
-      recent_commit_count = 15,
+      recent_commit_count = 100,
       HEAD_padding = 10,
       HEAD_folded = false,
       mode_padding = 3,
@@ -102,10 +103,10 @@ return {
       untracked = { folded = false, hidden = false },
       unstaged = { folded = false, hidden = false },
       staged = { folded = false, hidden = false },
-      stashes = { folded = true, hidden = false },
-      unpulled_upstream = { folded = true, hidden = false },
+      stashes = { folded = false, hidden = false },
+      unpulled_upstream = { folded = false, hidden = false },
       unmerged_upstream = { folded = false, hidden = false },
-      unpulled_pushRemote = { folded = true, hidden = false },
+      unpulled_pushRemote = { folded = false, hidden = false },
       unmerged_pushRemote = { folded = false, hidden = false },
       recent = { folded = false, hidden = false },
       rebase = { folded = true, hidden = false },

@@ -96,9 +96,12 @@ return {
     -- File history panel
     file_history_panel = {
       listing_style = "tree",
-      win_config = {
-        position = "bottom",
-        height = 16,
+      win_config = { position = "bottom", height = 16 },
+      log_options = {
+        git = {
+          single_file = { diff_merges = "combined", all = true },
+          multi_file = { diff_merges = "first-parent", all = true },
+        },
       },
     },
 
