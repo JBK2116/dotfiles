@@ -166,6 +166,18 @@ return {
         filter = { event = "msg_show", kind = "search_count" },
         opts = { skip = true },
       },
+      -- swallwod lint failures on diffview buffers
+      {
+        filter = {
+          event = "notify",
+          any = {
+            { find = "Linter timed out" },
+            { find = "Error running" },
+            { find = "nvim%-lint" },
+          },
+        },
+        opts = { skip = true },
+      },
       -- redirect long messages to a split
       {
         filter = { event = "msg_show", min_height = 10 },
