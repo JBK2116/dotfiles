@@ -5,6 +5,8 @@ alias syms='find ~ -maxdepth 3 -type l -lname "$HOME/.dotfiles/*" -printf "%p ->
 
 alias changeterm="sudo update-alternatives --config x-terminal-emulator"
 
+alias nvimclean="rm -rf ~/.cache/nvim ~/.local/state/nvim/swap ~/.local/state/nvim/*.log(N)"
+
 # Bat configuration
 alias cat='bat'                              # replace cat globally with syntax highlighting
 alias b='bat -p'                             # plain output, no headers/pager
