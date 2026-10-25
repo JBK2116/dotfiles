@@ -55,8 +55,15 @@ go.set_gopath = true
 tool_update.global_auto = "24h"
 
 [tasks.setup]
+description = "Install all tools and dependencies"
 run = """
 set -e
 npm install -g tree-sitter-cli
 pip install pylatexenc
+"""
+
+[tasks.upgrade-nvim]
+description = "Upgrade nvim to latest nightly version"
+run = """
+mise upgrade --bump neovim@nightly
 """
