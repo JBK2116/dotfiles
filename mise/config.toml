@@ -20,7 +20,7 @@ make = { version = "latest" }
 cmake = { version = "latest" }
 
 # Editor
-neovim = "latest"
+neovim = "nightly"
 
 # CLI Tools
 "aqua:cli/cli" = "latest"
