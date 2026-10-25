@@ -104,7 +104,7 @@ fi
 # For a full list of active aliases, run `alias`.
 
 # This loop initializes all alias files into the terminal session
-for file in ~/dotfiles/aliases/*; do # NOTE: ensure this path matches the system path
+for file in $HOME/.dotfiles/aliases/*; do
   [ -f "$file" ] && source "$file"
 done
 
@@ -117,7 +117,7 @@ af() {
 }
 
 # API Keys
-[ -f ~/.zshrc_secrets ] && source ~/.zshrc_secrets # NOTE: ensure this path matches the system path
+[ -f ~/.secrets ] && source ~/.secrets 
 
 # Neovim Mason Tooling
 export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
@@ -131,4 +131,4 @@ eval "$(zoxide init zsh)"
 eval "$(atuin init zsh)"
 
 # opencode
-export PATH=/home/jovbk/.opencode/bin:$PATH
+export PATH="$HOME/.opencode/bin:$PATH"

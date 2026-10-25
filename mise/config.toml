@@ -57,12 +57,6 @@ tool_update.global_auto = "24h"
 [tasks.setup]
 run = """
 set -e
-if command -v dnf >/dev/null; then PM="sudo dnf install -y"
-elif command -v apt >/dev/null; then PM="sudo apt install -y"
-elif command -v brew >/dev/null; then PM="brew install"
-else echo "No supported package manager found" && exit 1
-fi
-$PM unzip gcc make tar curl xclip tree git pkg-config
 npm install -g tree-sitter-cli
 pip install pylatexenc
 """

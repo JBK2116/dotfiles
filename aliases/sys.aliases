@@ -1,6 +1,8 @@
 # Basic command aliases
 alias cl="clear"
 
+alias syms='find ~ -maxdepth 3 -type l -lname "$HOME/.dotfiles/*" -printf "%p -> %l\n" 2>/dev/null'
+
 alias changeterm="sudo update-alternatives --config x-terminal-emulator"
 
 # Bat configuration
