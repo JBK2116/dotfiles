@@ -68,6 +68,24 @@ return {
       group = group,
       callback = refresh_git,
     })
+
+    -- Neogit finished refreshing (covers stage/unstage/commit/push/etc.)
+    vim.api.nvim_create_autocmd("User", {
+      group = group,
+      pattern = "NeogitStatusRefreshed",
+      callback = refresh_git,
+    })
+
+    -- Any git command from anywhere touches .git/index or .git/HEAD
+    local git_dir = vim.fs.find(".git", { upward = true })[1]
+    if git_dir then
+      local watcher = vim.uv.new_fs_event()
+      watcher:start(git_dir, {}, function(_, fname)
+        if fname == "index" or fname == "HEAD" then
+          vim.schedule(refresh_git)
+        end
+      end)
+    end
   end,
   ---@type neotree.Config
   opts = {
