@@ -3,25 +3,24 @@
 [tools] # Runtimes & Languages
 usage = "latest"
 # Java
-java = "openjdk-25"
+java = { version = "openjdk-25" }
 # Golang
-go = "latest"
-"go:github.com/pressly/goose/v3/cmd/goose" = "latest"
+go = { version = "latest" }
 # Python 
 python = { version = "latest", postinstall = "pip install pipx" }
-"aqua:astral-sh/uv" = "latest"
+"aqua:astral-sh/uv" = { version= "latest" }
 # Javascript
-node = "latest"
+node = { version = "latest" }
 npm = { version = "latest", postinstall = "npm install -g typescript" }
-"npm:typescript" = "latest"
+"npm:typescript" = { version = "latest" }
 # Rust
-rust = "latest"
+rust = { version = "latest" }
 # C/C++
-make = "latest"
-cmake = "latest"
+make = { version = "latest" }
+cmake = { version = "latest" }
 
 # Editor
-"aqua:neovim/neovim" = "latest"
+neovim = { version = "nightly" }
 
 # CLI Tools
 "aqua:cli/cli" = "latest"
@@ -52,6 +51,8 @@ not_found_auto_install = true
 # Automatically sets GOROOT and adds GOPATH/bin to PATH
 go.set_goroot = true
 go.set_gopath = true
+# auto update the tools by interval
+tool_update.global_auto = "24h"
 
 [tasks.setup]
 run = """
