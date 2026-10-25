@@ -171,7 +171,7 @@ return {
         filter = {
           event = "notify",
           any = {
-            { find = "Linter timed out" },
+            { find = "Linter command" },
             { find = "Error running" },
             { find = "nvim%-lint" },
           },
