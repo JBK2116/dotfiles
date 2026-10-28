@@ -38,6 +38,7 @@ neovim = "nightly"
 "cargo:eza" = "latest"
 "aqua:docker/cli" = "latest"
 "aqua:jesseduffield/lazydocker" = "latest"
+"aqua:tree-sitter/tree-sitter" = "latest"
 
 [settings]
 # Automatically sets JAVA_HOME whenever a Java version is active
@@ -53,14 +54,6 @@ go.set_goroot = true
 go.set_gopath = true
 # auto update the tools by interval
 tool_update.global_auto = "24h"
-
-[tasks.setup]
-description = "Install all tools and dependencies"
-run = """
-set -e
-npm install -g tree-sitter-cli
-pip install pylatexenc
-"""
 
 [tasks.upgrade-nvim]
 description = "Upgrade nvim to latest nightly version"
