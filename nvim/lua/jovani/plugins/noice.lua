@@ -153,6 +153,14 @@ return {
     routes = {
       -- swallow "written" file messages
       {
+        filter = {
+          event = "msg_show",
+          find = "Unable to retrieve stats from logfile",
+        },
+        opts = { skip = true },
+      },
+      -- swallow "written" file messages
+      {
         filter = { event = "msg_show", find = "%d+L, %d+B" },
         opts = { skip = true },
       },
