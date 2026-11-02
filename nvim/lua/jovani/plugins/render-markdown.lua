@@ -4,7 +4,7 @@
 -- shows the final rendered document — no browser, no second plugin.
 return {
   "MeanderingProgrammer/render-markdown.nvim",
-  ft = { "markdown", "quarto", "rmd", "noice" },
+  ft = { "markdown", "quarto", "rmd" },
   lazy = false,
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
@@ -17,7 +17,7 @@ return {
     preset = "obsidian",
 
     -- Also attach to R Markdown buffers
-    file_types = { "markdown", "quarto", "rmd", "noice" },
+    file_types = { "markdown", "quarto", "rmd" },
 
     -- Anti-conceal (hybrid mode equivalent)
     -- Hides decorations on the cursor line so you can edit raw text.
