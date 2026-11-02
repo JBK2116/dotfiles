@@ -2,6 +2,11 @@
 -- messages, and popups. Routes the cmdline into a floating popup, sends
 -- messages through nvim-notify, styles LSP hover/signature/progress, and
 -- filters out noisy "written" and search-count messages.
+--
+-- Also sanitizes LSP hover content before rendering: unwraps markdown links
+-- (ty wraps every type in a [text](file://...) link, which otherwise gets
+-- underlined/concealed and breaks bracket/spacing alignment) and fences
+-- indented code blocks so they get syntax highlighting.
 return {
   "folke/noice.nvim",
   event = "VeryLazy",
@@ -12,6 +17,7 @@ return {
   config = function(_, opts)
     require("noice").setup(opts)
 
+    -- Wrap runs of 4-space/tab indented lines in a fenced block so they highlight as code.
     local function fence_indented(s, lang)
       local out, in_fence, in_code = {}, false, false
       for _, line in ipairs(vim.split(s, "\n", { plain = true })) do
@@ -41,8 +47,10 @@ return {
       return table.concat(out, "\n")
     end
 
+    -- Unwrap [text](scheme:...) links, innermost first. Leaves generics like
+    -- list[int] and subscript-calls like handlers[name](x) untouched.
     local function clean(s, lang)
-      s = s:gsub("%[([^%]]*)%]%b()", "_%1_")
+      s = s:gsub("%[([^%[%]]+)%]%(%a[%w+.-]*:[^%s)]*%)", "%1")
       return fence_indented(s, lang)
     end
 
@@ -50,8 +58,15 @@ return {
       if type(c) == "string" then
         return clean(c, lang)
       elseif type(c) == "table" then
+        -- MarkedString { language, value } is already code, leave it alone
+        if c.language then
+          return c
+        end
         if c.value then
-          c.value = clean(c.value, lang)
+          -- MarkupContent { kind, value }
+          if c.kind ~= "plaintext" then
+            c.value = clean(c.value, lang)
+          end
         else
           for i, item in ipairs(c) do
             c[i] = clean_contents(item, lang)
@@ -61,14 +76,20 @@ return {
       return c
     end
 
-    local h = require("noice.lsp.hover")
-    local orig = h.on_hover
-    h.on_hover = function(err, result, ctx, config)
-      if result and result.contents then
-        local lang = ctx and ctx.bufnr and vim.bo[ctx.bufnr].filetype or ""
-        result.contents = clean_contents(result.contents, lang)
+    local ok, h = pcall(require, "noice.lsp.hover")
+    if ok and type(h.on_hover) == "function" then
+      local orig = h.on_hover
+      h.on_hover = function(err, result, ctx, config)
+        if result and result.contents then
+          local lang = ctx and ctx.bufnr and vim.api.nvim_buf_is_valid(ctx.bufnr) and vim.bo[ctx.bufnr].filetype or ""
+          -- never let a cleanup bug break hover: fall back to the raw content
+          local cleaned_ok, cleaned = pcall(clean_contents, vim.deepcopy(result.contents), lang)
+          if cleaned_ok then
+            result.contents = cleaned
+          end
+        end
+        return orig(err, result, ctx, config)
       end
-      return orig(err, result, ctx, config)
     end
   end,
 
@@ -151,7 +172,7 @@ return {
 
     -- Routes
     routes = {
-      -- swallow "written" file messages
+      -- swallow logfile stats errors
       {
         filter = {
           event = "msg_show",
@@ -164,17 +185,24 @@ return {
         filter = { event = "msg_show", find = "%d+L, %d+B" },
         opts = { skip = true },
       },
-      -- swallow basedpyright startups
+      -- swallow ty startup/indexing progress
       {
-        filter = { event = "lsp", kind = "progress", find = "basedpyright" },
+        filter = {
+          event = "lsp",
+          kind = "progress",
+          cond = function(message)
+            local client = vim.tbl_get(message.opts, "progress", "client")
+            return client == "ty"
+          end,
+        },
         opts = { skip = true },
       },
-      -- swallow search count virtultext noise
+      -- swallow search count virtualtext noise
       {
         filter = { event = "msg_show", kind = "search_count" },
         opts = { skip = true },
       },
-      -- swallwod lint failures on diffview buffers
+      -- swallow lint failures on diffview buffers
       {
         filter = {
           event = "notify",

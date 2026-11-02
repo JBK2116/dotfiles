@@ -1,26 +1,32 @@
 -- Configures Mason and its bridges to auto-install tooling. mason-lspconfig
 -- ensures the LSP servers used in lsp.lua are installed, and
 -- mason-tool-installer ensures the formatters/linters (prettier, stylua,
--- clang-format, goimports, golangci-lint) are present.
+-- clang-format, goimports, golangci-lint, ...) are present.
 return {
   {
     "williamboman/mason-lspconfig.nvim",
     opts = {
       ensure_installed = {
-        "tailwindcss", -- CSS
+        "tailwindcss", -- Tailwind CSS
         "graphql", -- GraphQL
-        "basedpyright", -- Python
-        "lua_ls", -- HTML
+        "ty", -- Python types
+        "pytest_language_server", -- Python tests
+        "lua_ls", -- Lua
         "svelte", -- Svelte
         "clangd", -- C/C++
-        "gopls", -- Golang
+        "gopls", -- Go
         "cssls", -- CSS
-        "prismals", -- Build
-        "eslint", -- JavaScript
-        "ruff", -- Python
+        "html", -- HTML
+        "emmet_language_server", -- HTML/CSS abbreviations
+        "prismals", -- Prisma
+        "eslint", -- JavaScript/TypeScript linting
+        "ruff", -- Python linting/formatting
         "vtsls", -- TypeScript
         "dockerls", -- Dockerfile
         "docker_compose_language_service", -- docker-compose
+        "jsonls", -- JSON
+        "yamlls", -- YAML
+        "taplo", -- TOML
         "typos_lsp", -- Spelling
         "bashls", -- Bash
       },
@@ -35,9 +41,9 @@ return {
           },
           ui = {
             icons = {
-              package_installed = " ",
-              package_pending = " ",
-              package_uninstalled = " ",
+              package_installed = " ",
+              package_pending = " ",
+              package_uninstalled = " ",
             },
           },
         },
@@ -49,11 +55,11 @@ return {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     opts = {
       ensure_installed = {
-        "prettier", -- JavaScript/TypeScript
-        "stylua", -- CSS
+        "prettier", -- JS/TS/CSS/HTML/JSON/YAML formatting
+        "stylua", -- Lua formatting
         "clang-format", -- C/C++
-        "goimports", -- Golang
-        "golangci-lint", -- Golang
+        "goimports", -- Go
+        "golangci-lint", -- Go
         "hadolint", -- Dockerfile linter
         "checkmake", -- Makefile
         "shellcheck", -- Bash (required by bashls for diagnostics)

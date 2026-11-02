@@ -1,17 +1,16 @@
 -- Configures nvim-lspconfig and the per-server LSP setup. Wires blink.cmp
--- capabilities into every server, sets project-scoped root patterns and
--- tuned settings for each language server (basedpyright, lua_ls, svelte, clangd,
--- gopls, ruff, ...), and enables them.
+-- capabilities into every server, sets project-scoped root detection and
+-- tuned settings for each language server (ty, lua_ls, svelte, clangd,
+-- gopls, ruff, jsonls, yamlls, ...), and enables them.
 return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/lazydev.nvim", opts = {} },
+    "b0o/SchemaStore.nvim",
   },
   config = function()
-    -- Forces the community default launch structures to merge into the native runtime path
-    local lspconfig = require("lspconfig")
     local capabilities = require("blink.cmp").get_lsp_capabilities({
       textDocument = {
         completion = {
@@ -19,7 +18,6 @@ return {
         },
       },
     })
-    local lsputil = require("lspconfig.util")
 
     -- Global: debounce all LSP requests slightly, reduces hammering on keystroke
     vim.lsp.config("*", {
@@ -27,40 +25,62 @@ return {
       flags = { debounce_text_changes = 150 },
     })
 
+    -- Inlay hints (gopls, vtsls, lua_ls, ...) on attach
+    vim.api.nvim_create_autocmd("LspAttach", {
+      callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client and client:supports_method("textDocument/inlayHint") then
+          vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+        end
+      end,
+    })
+
     -- Tailwind: only in tailwind projects
     vim.lsp.config.tailwindcss = {
-      root_dir = lsputil.root_pattern("tailwind.config.js", "tailwind.config.ts"),
+      root_dir = function(bufnr, on_dir)
+        local root = vim.fs.root(bufnr, {
+          "tailwind.config.js",
+          "tailwind.config.cjs",
+          "tailwind.config.mjs",
+          "tailwind.config.ts",
+        })
+        if root then
+          on_dir(root)
+        end
+      end,
     }
 
     -- GraphQL: only in graphql projects
     vim.lsp.config.graphql = {
-      root_dir = lsputil.root_pattern(".graphqlrc", ".graphqlrc.json", "graphql.config.js"),
+      root_dir = function(bufnr, on_dir)
+        local root = vim.fs.root(bufnr, {
+          ".graphqlrc",
+          ".graphqlrc.json",
+          ".graphqlrc.yml",
+          ".graphqlrc.yaml",
+          "graphql.config.js",
+        })
+        if root then
+          on_dir(root)
+        end
+      end,
     }
 
-    -- python: basedpyright is a stricter, faster pyright fork for type checking + intellisense.
-    -- Ruff owns linting/formatting, so these overrides keep basedpyright focused on type
-    -- checking and avoid emitting duplicate diagnostics with the ruff server.
-    vim.lsp.config("basedpyright", {
+    -- python: ty is Astral's Rust type checker + language server (fast incremental updates).
+    -- Ruff owns linting/formatting/import sorting; ty owns types, hover, and navigation.
+    vim.lsp.config("ty", {
       settings = {
-        basedpyright = {
-          -- Ruff sorts/fixes imports, so basedpyright's organizer would only fight it.
-          disableOrganizeImports = true,
-          analysis = {
-            autoSearchPaths = true,
-            diagnosticMode = "openFilesOnly",
-            diagnosticSeverityOverrides = {
-              reportUnusedImport = "none",                 -- ruff: F401
-              reportUnusedVariable = "none",               -- ruff: F841
-              reportUnusedParameter = "none",              -- ruff: ARG001
-              reportDuplicateImport = "none",              -- ruff: F811
-              reportUnusedExpression = "none",             -- ruff: B018
-              reportUnusedCallResult = "none",             -- ruff: B018
-              reportUnnecessaryTypeIgnoreComment = "none", -- ruff: PGH003/RUF100
-            },
-          },
-          disableTaggedHints = true,
+        ty = {
+          diagnosticMode = "openFilesOnly",
         },
       },
+    })
+
+    -- Pytest language server for testing functionality
+    vim.lsp.config("pytest_language_server", {
+      cmd = { "pytest-language-server" },
+      filetypes = { "python" },
+      root_markers = { "pytest.ini", "pyproject.toml", "setup.py", "setup.cfg", ".git" },
     })
 
     -- bash: scripting
@@ -73,6 +93,7 @@ return {
           diagnostics = { globals = { "vim" } },
           workspace = { checkThirdParty = false },
           telemetry = { enable = false },
+          hint = { enable = true },
         },
       },
     }
@@ -110,7 +131,19 @@ return {
     }
 
     -- vtsls: native TS/JS lsp for non-svelte projects
-    vim.lsp.config.vtsls = {}
+    -- For .ts files importing .svelte files: add typescript-svelte-plugin to the project's
+    -- devDependencies and to "compilerOptions.plugins" in tsconfig.json.
+    vim.lsp.config.vtsls = {
+      settings = {
+        typescript = {
+          inlayHints = {
+            parameterNames = { enabled = "literals" },
+            variableTypes = { enabled = false },
+            functionLikeReturnTypes = { enabled = true },
+          },
+        },
+      },
+    }
 
     -- clangd: keep indexing, skip clang-tidy
     vim.lsp.config.clangd = {
@@ -158,13 +191,42 @@ return {
     -- docker-compose: IntelliSense for compose files (uses yaml.docker-compose filetype)
     vim.lsp.config.docker_compose_language_service = {}
 
+    -- jsonls: JSON with schema validation/completion from SchemaStore
+    vim.lsp.config.jsonls = {
+      settings = {
+        json = {
+          schemas = require("schemastore").json.schemas(),
+          validate = { enable = true },
+        },
+      },
+    }
+
+    -- yamlls: YAML with SchemaStore schemas (CI configs, k8s, compose, ...)
+    -- schemaStore is disabled in favor of SchemaStore.nvim's schema list
+    vim.lsp.config.yamlls = {
+      settings = {
+        yaml = {
+          schemaStore = { enable = false, url = "" },
+          schemas = require("schemastore").yaml.schemas(),
+          keyOrdering = false,
+        },
+      },
+    }
+
+    -- taplo: TOML (pyproject.toml, Cargo.toml, ...)
+    vim.lsp.config.taplo = {}
+
+    -- html + emmet
+    vim.lsp.config.html = {}
+    vim.lsp.config.emmet_language_server = {}
+
     -- typos-lsp: Autocorrect in neovim
     vim.lsp.config("typos_lsp", {
       -- must be installed in path
       cmd = { "typos-lsp" },
       -- log level
       cmd_env = { RUST_LOG = "typos_lsp=error" },
-      -- init starutp options
+      -- init startup options
       init_options = {
         -- How typos are rendered in the editor, can be one of an Error, Warning, Info or Hint.
         -- Defaults to Info.
@@ -172,18 +234,21 @@ return {
       },
     })
 
-    -- Extra lsp configurations (Now properly inheriting global settings)
+    -- Extra lsp configurations (inheriting global settings)
     vim.lsp.config.cssls = {}
     vim.lsp.config.prismals = {}
     vim.lsp.config.eslint = {}
-    -- Ruff: only linting/formatting code actions; basedpyright owns the rest of the LSP
-    -- features. The native ruff server reads its settings from init_options.settings.
+
+    -- Ruff configuration for python linting
     vim.lsp.config.ruff = {
+      on_attach = function(client)
+        client.server_capabilities.hoverProvider = false -- ty owns hover
+      end,
       init_options = {
         settings = {
-          fixAll = true,          -- Register source.fixAll (auto-fixable lint violations)
-          organizeImports = true, -- Register source.organizeImports (import sorting)
-          showSyntaxErrors = false, -- basedpyright reports syntax errors; avoid duplicates
+          fixAll = true,
+          organizeImports = true,
+          showSyntaxErrors = false, -- ty reports syntax errors
         },
       },
     }
@@ -196,22 +261,28 @@ return {
       },
     })
 
-    -- Crucial step: Tells Neovim to actually activate and spin up these engines
+    -- Tells Neovim to actually activate these servers
     vim.lsp.enable({
       "tailwindcss",
       "graphql",
-      "basedpyright",
+      "ty",
+      "pytest_language_server",
       "lua_ls",
       "svelte",
       "clangd",
       "gopls",
       "cssls",
+      "html",
+      "emmet_language_server",
       "prismals",
       "eslint",
       "ruff",
       "vtsls",
       "dockerls",
       "docker_compose_language_service",
+      "jsonls",
+      "yamlls",
+      "taplo",
       "typos_lsp",
       "bashls",
     })
