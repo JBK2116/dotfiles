@@ -1,251 +1,117 @@
--- render-markdown.nvim: Single-plugin markdown rendering + live document preview.
--- Replaces markview.nvim entirely. Provides both in-buffer WYSIWYG rendering
--- AND a synchronized split-view preview (`:RenderMarkdown preview`) that
--- shows the final rendered document — no browser, no second plugin.
+-- render-markdown.nvim: in-buffer rendering + noice hover/signature docs.
 return {
   "MeanderingProgrammer/render-markdown.nvim",
-  ft = { "markdown", "quarto", "rmd" },
   lazy = false,
   dependencies = {
-    "nvim-treesitter/nvim-treesitter",
-    "nvim-tree/nvim-web-devicons", -- language icons on code blocks
+    "nvim-treesitter/nvim-treesitter", -- parsers: markdown, markdown_inline, html, latex, yaml
+    "nvim-tree/nvim-web-devicons", -- code block language icons
   },
   ---@module 'render-markdown'
   ---@type render.md.UserConfig
   opts = {
-    -- Mimic Obsidian UI: render in ALL modes (including insert)
     preset = "obsidian",
-
-    -- Also attach to R Markdown buffers
     file_types = { "markdown", "quarto", "rmd" },
 
-    -- Anti-conceal (hybrid mode equivalent)
-    -- Hides decorations on the cursor line so you can edit raw text.
-    -- Similar to your old markview hybrid_modes = { "i" } but smarter.
+    -- Render in every mode (insert included); anti_conceal handles editing.
+    render_modes = true,
+    debounce = 100,
+    max_file_size = 10.0,
+
+    -- Raw text on the cursor line only. Block backgrounds, indent and signs stay.
     anti_conceal = {
       enabled = true,
-      above = 0, -- show rendered content starting at cursor
+      above = 0,
       below = 0,
       ignore = {
-        code_background = true, -- always show code block backgrounds
+        code_background = true,
         indent = true,
         sign = true,
         virtual_lines = true,
       },
     },
 
-    -- Headings
+    win_options = {
+      conceallevel = { default = vim.o.conceallevel, rendered = 3 },
+      concealcursor = { default = vim.o.concealcursor, rendered = "" },
+    },
+
     heading = {
-      enabled = true,
-      sign = true,
-      -- Match your old markview icons
-      icons = { "󰉫 ", "󰉬 ", "󰉭 ", "󰉮 ", "󰉯 ", "󰉰 " },
-      signs = { "󰫎 " },
+      sign = false, -- no gutter clutter
       position = "inline",
       width = "full",
       left_pad = 0,
       right_pad = 1,
-      min_width = 0,
       border = false,
-      backgrounds = {
-        "RenderMarkdownH1Bg",
-        "RenderMarkdownH2Bg",
-        "RenderMarkdownH3Bg",
-        "RenderMarkdownH4Bg",
-        "RenderMarkdownH5Bg",
-        "RenderMarkdownH6Bg",
-      },
-      foregrounds = {
-        "RenderMarkdownH1",
-        "RenderMarkdownH2",
-        "RenderMarkdownH3",
-        "RenderMarkdownH4",
-        "RenderMarkdownH5",
-        "RenderMarkdownH6",
-      },
+      icons = { "󰉫 ", "󰉬 ", "󰉭 ", "󰉮 ", "󰉯 ", "󰉰 " },
     },
 
-    -- Code Blocks
     code = {
-      enabled = true,
-      sign = true,
       style = "full",
-      position = "left",
+      sign = false,
+      width = "full",
+      left_pad = 1,
+      right_pad = 1,
+      border = "thin",
+      conceal_delimiters = true,
       language_icon = true,
       language_name = true,
-      width = "full",
-      left_pad = 0,
-      right_pad = 1,
-      min_width = 0,
-      border = "thin",
-      above = "▄",
-      below = "▀",
+      language_info = true,
+      disable_background = { "diff" },
       inline = true,
       inline_pad = 1,
-      highlight = "RenderMarkdownCode",
-      highlight_inline = "RenderMarkdownCodeInline",
     },
 
-    -- Block Quotes & Callouts
-    quote = {
-      enabled = true,
-      icon = "▋", -- your old markview border
-      repeat_linebreak = false,
-      highlight = {
-        "RenderMarkdownQuote1",
-        "RenderMarkdownQuote2",
-        "RenderMarkdownQuote3",
-        "RenderMarkdownQuote4",
-        "RenderMarkdownQuote5",
-        "RenderMarkdownQuote6",
-      },
-    },
-    -- All GitHub + Obsidian callouts come pre-configured.
-    -- GitHub: NOTE, TIP, IMPORTANT, WARNING, CAUTION
-    -- Obsidian: ABSTRACT, SUMMARY, TLDR, INFO, TODO, HINT, SUCCESS,
-    --           CHECK, DONE, QUESTION, HELP, FAQ, ATTENTION,
-    --           FAILURE, FAIL, MISSING, DANGER, ERROR, BUG,
-    --           EXAMPLE, QUOTE, CITE
-
-    -- Tables
-    pipe_table = {
-      enabled = true,
-      style = "full",
-      preset = "none",
-      cell = "padded",
-      padding = 1,
-      min_width = 0,
-      alignment_indicator = "━",
-      -- stylua: ignore
-      border = {
-        "┌", "┬", "┐",
-        "├", "┼", "┤",
-        "└", "┴", "┘",
-        "│", "─",
-      },
-      head = "RenderMarkdownTableHead",
-      row = "RenderMarkdownTableRow",
-    },
-
-    -- Lists & Bullets
     bullet = {
-      enabled = true,
-      -- Cycle through icons per nesting level (matches old markview)
       icons = { "●", "○", "◆", "◇" },
+      right_pad = 1,
+      -- Fixed: nil-safe (`or 0`), matches upstream default.
       ordered_icons = function(ctx)
         local value = vim.trim(ctx.value)
-        local index = tonumber(value:sub(1, #value - 1))
+        local index = tonumber(value:sub(1, #value - 1)) or 0
         return ("%d."):format(index > 1 and index or ctx.index)
       end,
-      left_pad = 0,
-      right_pad = 1,
-      highlight = "RenderMarkdownBullet",
     },
 
-    -- Checkboxes
     checkbox = {
-      enabled = true,
-      bullet = false,
-      left_pad = 0,
       right_pad = 1,
-      unchecked = {
-        icon = "󰄱 ",
-        highlight = "RenderMarkdownUnchecked",
-      },
-      checked = {
-        icon = "󰱒 ",
-        highlight = "RenderMarkdownChecked",
-      },
       custom = {
         todo = { raw = "[-]", rendered = "󰥔 ", highlight = "RenderMarkdownTodo" },
-        pending = { raw = "[?]", rendered = "󰥔 ", highlight = "RenderMarkdownTodo" },
+        progress = { raw = "[~]", rendered = "󰦖 ", highlight = "RenderMarkdownInfo" },
+        important = { raw = "[!]", rendered = "󰀪 ", highlight = "RenderMarkdownWarn" },
+        cancelled = { raw = "[/]", rendered = "󰅖 ", highlight = "RenderMarkdownError" },
       },
     },
 
-    -- Horizontal Rules
-    dash = {
-      enabled = true,
-      icon = "─",
-      width = "full",
-      highlight = "RenderMarkdownDash",
+    quote = { icon = "▋", repeat_linebreak = false },
+
+    pipe_table = {
+      style = "full",
+      preset = "round",
+      cell = "padded",
+      wrap = true, -- fit wide tables to the window
+      padding = 1,
     },
 
-    -- Links
     link = {
-      enabled = true,
-      image = "󰥶 ",
-      email = "󰀓 ",
-      hyperlink = "󰌹 ",
-      highlight = "RenderMarkdownLink",
-      wiki = {
-        enabled = true,
-        icon = "󱗖 ",
-        conceal_destination = true,
-        highlight = "RenderMarkdownWikiLink",
-      },
-      -- Destination-specific icons (pre-configured for GitHub, YouTube, etc.)
-      custom = {
-        github = { icon = "󰊤 ", pattern = "github%.com", kind = "url" },
-        youtube = { icon = "󰗃 ", pattern = "youtube[^.]*%.com", kind = "url" },
-        reddit = { icon = "󰑍 ", pattern = "reddit%.com", kind = "url" },
-        stackoverflow = { icon = "󰓌 ", pattern = "stackoverflow%.com", kind = "url" },
-      },
+      footnote = { enabled = true, superscript = true },
+      wiki = { enabled = true, conceal_destination = true },
     },
 
-    -- Obsidian Inline Highlights (==text==)
-    inline_highlight = {
-      enabled = true,
-      highlight = "RenderMarkdownInlineHighlight",
-    },
+    inline_highlight = { enabled = true }, -- ==text==
 
-    -- LaTeX Math
-    latex = {
-      enabled = true,
-      inline = true,
-      block = true,
-      converter = { "latex2text" },
-      highlight = "RenderMarkdownMath",
-      position = "center",
-      top_pad = 0,
-      bottom_pad = 0,
-    },
+    -- Needs utftex (libtexprintf) or latex2text (pylatexenc) on PATH.
+    latex = { enabled = true, converter = { "utftex", "latex2text" } },
 
-    -- HTML
-    html = {
-      enabled = true,
-      comment = {
-        conceal = true,
-      },
-    },
+    html = { comment = { conceal = true } },
 
-    -- Window Options
-    win_options = {
-      conceallevel = {
-        default = vim.o.conceallevel,
-        rendered = 3, -- fully conceal markdown syntax
-      },
-      concealcursor = {
-        default = vim.o.concealcursor,
-        rendered = "", -- show concealed text in all modes when cursor is on it
-      },
-    },
-
-    -- Completions
-    completions = {
-      lsp = { enabled = true },
-    },
+    completions = { lsp = { enabled = true } }, -- callout/checkbox completion
   },
 
   keys = {
-    -- Toggle the split-view document preview (Obsidian reading view)
-    { "<leader>mp", "<cmd>RenderMarkdown preview<cr>", desc = "Toggle markdown preview (split)" },
-    -- Toggle rendering on/off globally
-    { "<leader>mt", "<cmd>RenderMarkdown toggle<cr>", desc = "Toggle markdown rendering" },
-    -- Toggle rendering for current buffer only
-    { "<leader>mbt", "<cmd>RenderMarkdown buf_toggle<cr>", desc = "Toggle rendering (buffer)" },
-    -- Expand anti-conceal margin (show more rendered lines around cursor)
+    { "<leader>mp", "<cmd>RenderMarkdown preview<cr>", desc = "Markdown preview (split)" },
+    { "<leader>mt", "<cmd>RenderMarkdown toggle<cr>", desc = "Toggle rendering" },
+    { "<leader>mb", "<cmd>RenderMarkdown buf_toggle<cr>", desc = "Toggle rendering (buffer)" },
     { "<leader>me", "<cmd>RenderMarkdown expand<cr>", desc = "Expand anti-conceal margin" },
-    -- Contract anti-conceal margin (show fewer rendered lines)
     { "<leader>mc", "<cmd>RenderMarkdown contract<cr>", desc = "Contract anti-conceal margin" },
   },
 }
