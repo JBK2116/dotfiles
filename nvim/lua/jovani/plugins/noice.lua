@@ -76,21 +76,35 @@ return {
       return c
     end
 
-    local ok, h = pcall(require, "noice.lsp.hover")
-    if ok and type(h.on_hover) == "function" then
-      local orig = h.on_hover
-      h.on_hover = function(err, result, ctx, config)
-        if result and result.contents then
-          local lang = ctx and ctx.bufnr and vim.api.nvim_buf_is_valid(ctx.bufnr) and vim.bo[ctx.bufnr].filetype or ""
-          -- never let a cleanup bug break hover: fall back to the raw content
-          local cleaned_ok, cleaned = pcall(clean_contents, vim.deepcopy(result.contents), lang)
-          if cleaned_ok then
-            result.contents = cleaned
-          end
+    -- Intercept hover responses at the client level. Neovim 0.11+ bypasses
+    -- vim.lsp.handlers and other hooks, so wrap client.request on attach.
+    vim.api.nvim_create_autocmd("LspAttach", {
+      callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if not client or client._hover_cleaned then
+          return
         end
-        return orig(err, result, ctx, config)
-      end
-    end
+        client._hover_cleaned = true
+        local orig = client.request
+        client.request = function(self, method, params, handler, bufnr)
+          if method == "textDocument/hover" and handler then
+            local inner = handler
+            handler = function(err, result, ctx, config)
+              if result and result.contents then
+                local lang = vim.bo[bufnr or args.buf].filetype
+                -- never let a cleanup bug break hover: fall back to raw content
+                local ok, cleaned = pcall(clean_contents, vim.deepcopy(result.contents), lang)
+                if ok then
+                  result.contents = cleaned
+                end
+              end
+              return inner(err, result, ctx, config)
+            end
+          end
+          return orig(self, method, params, handler, bufnr)
+        end
+      end,
+    })
   end,
 
   opts = {
@@ -157,7 +171,7 @@ return {
           replace = true,
           render = "markdown",
           format = { "{message}" },
-          win_options = { concealcursor = "nc", conceallevel = 2 },
+          win_options = { concealcursor = "", conceallevel = 0 },
         },
       },
     },
@@ -253,7 +267,17 @@ return {
         position = { row = 2, col = 0 },
         size = { max_height = 16, max_width = 140, min_width = 80 },
         win_options = {
-          winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
+          -- conceal off + link groups neutralized: markdown_inline was treating
+          -- list[str | Enum] as a shortcut link, concealing brackets and underlining
+          winhighlight = table.concat({
+            "Normal:NormalFloat",
+            "FloatBorder:FloatBorder",
+            "@markup.link:Normal",
+            "@markup.link.label:Normal",
+            "@markup.link.url:Normal",
+          }, ","),
+          conceallevel = 0,
+          concealcursor = "",
           wrap = true,
           linebreak = true,
         },
