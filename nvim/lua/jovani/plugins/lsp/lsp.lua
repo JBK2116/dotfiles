@@ -1,6 +1,6 @@
 -- Configures nvim-lspconfig and the per-server LSP setup. Wires blink.cmp
 -- capabilities into every server, sets project-scoped root detection and
--- tuned settings for each language server (basedpyright, lua_ls, svelte, clangd,
+-- tuned settings for each language server (ty, lua_ls, svelte, clangd,
 -- gopls, ruff, jsonls, yamlls, ...), and enables them.
 return {
   "neovim/nvim-lspconfig",
@@ -66,20 +66,18 @@ return {
       end,
     }
 
-    -- python: pyright owns types, hover, and navigation.
+    -- python: ty owns types, hover, and navigation.
     -- Ruff owns linting/formatting/import sorting.
-    vim.lsp.config("pyright", {
+    vim.lsp.config("ty", {
       settings = {
-        pyright = {
-          disableOrganizeImports = true, -- ruff handles import sorting
-        },
-        python = {
-          analysis = {
-            diagnosticMode = "openFilesOnly",
-            typeCheckingMode = "standard",
-            autoSearchPaths = true,
-            useLibraryCodeForTypes = true,
+        ty = {
+          -- inline settings override ty.toml / pyproject.toml
+          configuration = {
+            rules = {
+              ["possibly-unresolved-reference"] = "warn",
+            },
           },
+          inlayHints = { variableTypes = true }, -- default
         },
       },
     })
@@ -273,7 +271,7 @@ return {
     vim.lsp.enable({
       "tailwindcss",
       "graphql",
-      "basedpyright",
+      "ty",
       "pytest_language_server",
       "lua_ls",
       "svelte",
