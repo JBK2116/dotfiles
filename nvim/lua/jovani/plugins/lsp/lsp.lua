@@ -1,6 +1,6 @@
 -- Configures nvim-lspconfig and the per-server LSP setup. Wires blink.cmp
 -- capabilities into every server, sets project-scoped root detection and
--- tuned settings for each language server (ty, lua_ls, svelte, clangd,
+-- tuned settings for each language server (basedpyright, lua_ls, svelte, clangd,
 -- gopls, ruff, jsonls, yamlls, ...), and enables them.
 return {
   "neovim/nvim-lspconfig",
@@ -66,12 +66,20 @@ return {
       end,
     }
 
-    -- python: ty is Astral's Rust type checker + language server (fast incremental updates).
-    -- Ruff owns linting/formatting/import sorting; ty owns types, hover, and navigation.
-    vim.lsp.config("ty", {
+    -- python: pyright owns types, hover, and navigation.
+    -- Ruff owns linting/formatting/import sorting.
+    vim.lsp.config("pyright", {
       settings = {
-        ty = {
-          diagnosticMode = "openFilesOnly",
+        pyright = {
+          disableOrganizeImports = true, -- ruff handles import sorting
+        },
+        python = {
+          analysis = {
+            diagnosticMode = "openFilesOnly",
+            typeCheckingMode = "standard",
+            autoSearchPaths = true,
+            useLibraryCodeForTypes = true,
+          },
         },
       },
     })
@@ -265,7 +273,7 @@ return {
     vim.lsp.enable({
       "tailwindcss",
       "graphql",
-      "ty",
+      "basedpyright",
       "pytest_language_server",
       "lua_ls",
       "svelte",
