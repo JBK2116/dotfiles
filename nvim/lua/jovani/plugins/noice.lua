@@ -164,16 +164,6 @@ return {
           throttle = 50,
         },
       },
-      documentation = {
-        view = "hover",
-        opts = {
-          lang = "markdown",
-          replace = true,
-          render = "markdown",
-          format = { "{message}" },
-          win_options = { concealcursor = "", conceallevel = 0 },
-        },
-      },
     },
 
     -- Presets
@@ -276,7 +266,7 @@ return {
             "@markup.link.label:Normal",
             "@markup.link.url:Normal",
           }, ","),
-          conceallevel = 0,
+          conceallevel = 3,
           concealcursor = "",
           wrap = true,
           linebreak = true,

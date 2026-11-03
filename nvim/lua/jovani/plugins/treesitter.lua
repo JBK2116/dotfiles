@@ -33,6 +33,7 @@ return {
         "yaml",
         "toml",
         "markdown",
+        "markdown_inline",
         "html",
         "xml",
         "css",
