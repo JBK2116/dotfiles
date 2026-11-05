@@ -52,7 +52,7 @@ return {
           "filetype",
         },
         lualine_y = { "searchcount" },
-        lualine_z = { "location" },
+        lualine_z = { "location", { require("opencode").statusline } },
       },
     })
   end,

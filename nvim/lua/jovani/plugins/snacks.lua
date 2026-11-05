@@ -9,6 +9,8 @@ return {
   lazy = false,
   ---@type snacks.Config
   opts = {
+    input = { enabled = true },
+    terminal = { enabled = true },
     bigfile = { enabled = true },
     dashboard = {
       enabled = false,
@@ -29,6 +31,11 @@ return {
     gh = { enabled = false },
     gitbrowse = { enabled = true, what = "permalink" },
     picker = {
+      actions = { -- opencode
+        opencode_send = function(...)
+          return require("opencode").snacks_picker_send(...)
+        end,
+      },
       enabled = true,
       ---@type snacks.picker.matcher.Config
       matcher = {
@@ -48,6 +55,7 @@ return {
         input = {
           keys = {
             ["<C-c>"] = { "close", mode = { "i", "n" } },
+            ["<C-a>"] = { "opencode_send", mode = { "n", "i" } }, -- opencode send selection to target
           },
         },
       },
