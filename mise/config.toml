@@ -3,12 +3,14 @@
 [tools] # Runtimes & Languages
 usage = "latest"
 # Java
-java = { version = "openjdk-25" }
+java = { version = "openjdk-21" }
+maven = { version = "latest" }
+gradle = { version = "latest" }
 # Golang
 go = { version = "latest" }
 # Python 
 python = { version = "latest", postinstall = "pip install pipx" }
-"aqua:astral-sh/uv" = { version= "latest" }
+"aqua:astral-sh/uv" = { version = "latest" }
 # Javascript
 node = { version = "latest" }
 npm = { version = "latest", postinstall = "npm install -g typescript" }
