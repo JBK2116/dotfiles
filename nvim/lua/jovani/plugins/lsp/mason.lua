@@ -29,6 +29,7 @@ return {
         "taplo", -- TOML
         "typos_lsp", -- Spelling
         "bashls", -- Bash
+        "lemminx", -- XML
       },
       automatic_enable = false,
     },
@@ -63,6 +64,9 @@ return {
         "hadolint", -- Dockerfile linter
         "checkmake", -- Makefile
         "shellcheck", -- Bash (required by bashls for diagnostics)
+        "jdtls", -- java related tooling
+        "vscode-spring-boot-tools", -- springboot toolings
+        "sonarlint-language-server", -- sonarlint for java
       },
     },
     dependencies = { "williamboman/mason.nvim" },

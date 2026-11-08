@@ -176,6 +176,14 @@ return {
 
     -- Routes
     routes = {
+      -- swallow SonarLint client mismatch warnings
+      {
+        filter = {
+          event = "notify",
+          find = "Cannot find sonarlint client that matches to Java LSP client",
+        },
+        opts = { skip = true },
+      },
       -- swallow logfile stats errors
       {
         filter = {

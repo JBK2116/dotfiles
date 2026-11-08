@@ -259,6 +259,8 @@ return {
       },
     }
 
+    vim.lsp.config.lemminx = {}
+
     -- Ensure docker-compose files get the correct filetype for the compose LSP
     vim.filetype.add({
       pattern = {
@@ -291,6 +293,7 @@ return {
       "taplo",
       "typos_lsp",
       "bashls",
+      "lemminx",
     })
   end,
 }

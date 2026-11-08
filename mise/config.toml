@@ -3,7 +3,7 @@
 [tools] # Runtimes & Languages
 usage = "latest"
 # Java
-java = { version = "openjdk-21" }
+java = "openjdk-25.0.2"         # This is needed for gradle and maven to work properly with jdtls
 maven = { version = "latest" }
 gradle = { version = "latest" }
 # Golang

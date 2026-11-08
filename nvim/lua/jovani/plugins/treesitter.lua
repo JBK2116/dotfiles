@@ -37,6 +37,7 @@ return {
         "html",
         "xml",
         "css",
+        "java",
         "latex",
       })
 
@@ -258,6 +259,7 @@ return {
           "markdown",
           "svelte",
           "html",
+          "java",
           "xml",
           "css",
         },
