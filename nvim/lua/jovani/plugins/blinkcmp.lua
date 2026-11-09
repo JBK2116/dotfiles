@@ -14,7 +14,8 @@ local keymap = {
   ["<C-f>"] = { "scroll_documentation_down", "fallback" },
   ["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
   ["<C-e>"] = { "hide", "fallback" },
-  ["<Tab>"] = { "select_and_accept", "fallback" },
+  ["<Tab>"] = { "select_and_accept", "snippet_forward", "fallback" },
+  ["<S-Tab>"] = { "snippet_backward", "fallback" },
 }
 
 ---@type blink.cmp.Config
@@ -23,12 +24,14 @@ local opts = {
 
   appearance = {
     nerd_font_variant = "mono",
-    use_nvim_cmp_as_default = false,
   },
 
   -- Native fuzzy = faster, disable typo resistance for speed
   fuzzy = {
-    implementation = "rust",
+    max_typos = function()
+      return 0
+    end,
+    implementation = "prefer_rust_with_warning",
     frecency = {
       enabled = true,
       unsafe_no_lock = true,
@@ -37,14 +40,7 @@ local opts = {
   },
 
   completion = {
-    keyword = { range = "full" },
-
-    trigger = {
-      show_on_keyword = true,
-      show_on_trigger_character = true,
-      show_on_insert_on_trigger_character = true,
-      show_on_accept_on_trigger_character = true,
-    },
+    keyword = { range = "prefix" },
 
     accept = {
       auto_brackets = {
@@ -126,13 +122,6 @@ local opts = {
         score_offset = -5,
         min_keyword_length = 2,
         max_items = 10,
-        opts = {
-          get_bufnrs = function()
-            return vim.tbl_filter(function(b)
-              return vim.bo[b].buftype == ""
-            end, vim.api.nvim_list_bufs())
-          end,
-        },
       },
     },
   },
