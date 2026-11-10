@@ -6,7 +6,12 @@ return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    { "antosha417/nvim-lsp-file-operations", config = true },
+    {
+      "antosha417/nvim-lsp-file-operations",
+      -- neo-tree must load before this plugin for it to hook neo-tree's file events
+      dependencies = { "nvim-lua/plenary.nvim", "nvim-neo-tree/neo-tree.nvim" },
+      config = true,
+    },
     { "folke/lazydev.nvim", opts = {} },
     "b0o/SchemaStore.nvim",
   },
@@ -19,10 +24,13 @@ return {
       },
     })
 
-    -- Global: debounce all LSP requests slightly, reduces hammering on keystroke
+    -- Advertise file-operation support (neo-tree rename/create/delete -> servers update imports)
+    capabilities = vim.tbl_deep_extend("force", capabilities, require("lsp-file-operations").default_capabilities())
+
+    -- Global: blink.cmp capabilities for every server.
+    -- (flags.debounce_text_changes is already 150ms by default in Neovim, so it is not set here.)
     vim.lsp.config("*", {
       capabilities = capabilities,
-      flags = { debounce_text_changes = 150 },
     })
 
     -- Inlay hints (gopls, vtsls, lua_ls, ...) on attach
@@ -165,10 +173,11 @@ return {
     }
 
     -- gopls
+    -- staticcheck is left unset: gopls then runs a curated subset of staticcheck analyzers
+    -- chosen for runtime efficiency (staticcheck = true enables all of them).
     vim.lsp.config.gopls = {
       settings = {
         gopls = {
-          staticcheck = true,
           analyses = {
             unusedparams = true,
             shadow = true,
