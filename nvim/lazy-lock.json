@@ -1,5 +1,5 @@
 {
-  "SchemaStore.nvim": { "branch": "main", "commit": "cb6074339e4a7057140912e308d93155e55d1410" },
+  "SchemaStore.nvim": { "branch": "main", "commit": "92e7b3b2dbd1505fcbcb20f1fdd987b35e9cd34b" },
   "blink.cmp": { "branch": "main", "commit": "78336bc89ee5365633bcf754d93df01678b5c08f" },
   "blink.indent": { "branch": "main", "commit": "2e9c9768affeaf3a48b2dc329eb59763012f79f6" },
   "bufdelete.nvim": { "branch": "master", "commit": "f6bcea78afb3060b198125256f897040538bcb81" },
