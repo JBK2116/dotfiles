@@ -6,3 +6,7 @@ alias javaversionchange="sudo update-alternatives --config java"
 alias gradle="./gradlew"
 alias gradlerun="./gradlew bootRun"
 alias gradlesetup="chmod +x gradlew"
+
+# Springboot aliases
+alias sbrun='./mvnw -q spring-boot:run -Dspring-boot.run.arguments="--spring.main.banner-mode=off --spring.main.log-startup-info=false --logging.level.root=WARN"'
+alias sbtest='./mvnw -q test -Dspring.main.banner-mode=off -Dspring.main.log-startup-info=false -Dlogging.level.root=WARN'
